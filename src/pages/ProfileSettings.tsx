@@ -41,11 +41,18 @@ const unitCategoryOptions: { value: UnitCategory; label: string; description: st
   { value: 'other', label: 'Other', description: 'Other affiliation not listed above' },
 ];
 
+const notificationModeOptions = [
+  { value: 'immediate', label: 'Immediate', description: 'Get notified right away when your logs are verified or flagged' },
+  { value: 'digest', label: 'Daily Digest', description: 'Receive a single daily summary email with all status changes' },
+  { value: 'none', label: 'None', description: 'No email notifications (you can still check status in your dashboard)' },
+];
+
 const profileSchema = z.object({
   full_name: z.string().min(2, 'Name must be at least 2 characters').max(100, 'Name must be less than 100 characters'),
   unit: z.string().max(100, 'Unit name must be less than 100 characters').optional().or(z.literal('')),
   unit_category: z.enum(['veterans', 'government', 'military_family', 'civilian', 'other']).nullable(),
   email_notifications: z.boolean(),
+  notification_mode: z.enum(['immediate', 'digest', 'none']),
   notify_on_verified: z.boolean(),
   notify_on_flagged: z.boolean(),
 });
@@ -66,6 +73,7 @@ export default function ProfileSettings() {
       unit: '',
       unit_category: null,
       email_notifications: true,
+      notification_mode: 'immediate',
       notify_on_verified: true,
       notify_on_flagged: true,
     },
@@ -84,7 +92,7 @@ export default function ProfileSettings() {
       try {
         const { data, error } = await supabase
           .from('profiles')
-          .select('full_name, unit, unit_category, email_notifications, notify_on_verified, notify_on_flagged')
+          .select('full_name, unit, unit_category, email_notifications, notification_mode, notify_on_verified, notify_on_flagged')
           .eq('user_id', user.id)
           .maybeSingle();
 
@@ -96,6 +104,7 @@ export default function ProfileSettings() {
             unit: data.unit || '',
             unit_category: data.unit_category,
             email_notifications: data.email_notifications ?? true,
+            notification_mode: (data as any).notification_mode || 'immediate',
             notify_on_verified: data.notify_on_verified ?? true,
             notify_on_flagged: data.notify_on_flagged ?? true,
           });
@@ -125,9 +134,10 @@ export default function ProfileSettings() {
           unit: values.unit || null,
           unit_category: values.unit_category,
           email_notifications: values.email_notifications,
+          notification_mode: values.notification_mode,
           notify_on_verified: values.notify_on_verified,
           notify_on_flagged: values.notify_on_flagged,
-        })
+        } as any)
         .eq('user_id', user.id);
 
       if (error) throw error;
@@ -335,48 +345,90 @@ export default function ProfileSettings() {
 
                       {/* Conditional notification options */}
                       {form.watch('email_notifications') && (
-                        <div className="ml-4 space-y-3 animate-fade-in">
+                        <div className="ml-4 space-y-4 animate-fade-in">
+                          {/* Notification Mode */}
                           <FormField
                             control={form.control}
-                            name="notify_on_verified"
+                            name="notification_mode"
                             render={({ field }) => (
-                              <FormItem className="flex items-center justify-between rounded-lg border border-border/50 p-3 bg-secondary/20">
-                                <div className="space-y-0.5">
-                                  <FormLabel className="text-sm">Verification Confirmations</FormLabel>
-                                  <FormDescription className="text-xs">
-                                    Notify me when my workout logs are verified.
-                                  </FormDescription>
-                                </div>
-                                <FormControl>
-                                  <Switch
-                                    checked={field.value}
-                                    onCheckedChange={field.onChange}
-                                  />
-                                </FormControl>
+                              <FormItem>
+                                <FormLabel className="text-sm font-medium">Notification Frequency</FormLabel>
+                                <Select
+                                  onValueChange={field.onChange}
+                                  value={field.value}
+                                >
+                                  <FormControl>
+                                    <SelectTrigger className="bg-secondary/50 border-border">
+                                      <SelectValue placeholder="Select notification mode" />
+                                    </SelectTrigger>
+                                  </FormControl>
+                                  <SelectContent className="bg-card border-border">
+                                    {notificationModeOptions.map((option) => (
+                                      <SelectItem key={option.value} value={option.value}>
+                                        <div className="flex flex-col">
+                                          <span>{option.label}</span>
+                                        </div>
+                                      </SelectItem>
+                                    ))}
+                                  </SelectContent>
+                                </Select>
+                                <FormDescription className="text-xs">
+                                  {notificationModeOptions.find(o => o.value === field.value)?.description}
+                                </FormDescription>
+                                {field.value === 'digest' && (
+                                  <p className="text-xs text-amber-500 mt-2 p-2 bg-amber-500/10 rounded border border-amber-500/20">
+                                    ⚠️ With Daily Digest, you'll receive a single summary email at the end of each day instead of real-time updates. Flagged logs that need attention may not reach you immediately.
+                                  </p>
+                                )}
                               </FormItem>
                             )}
                           />
 
-                          <FormField
-                            control={form.control}
-                            name="notify_on_flagged"
-                            render={({ field }) => (
-                              <FormItem className="flex items-center justify-between rounded-lg border border-border/50 p-3 bg-secondary/20">
-                                <div className="space-y-0.5">
-                                  <FormLabel className="text-sm">Flag Alerts</FormLabel>
-                                  <FormDescription className="text-xs">
-                                    Notify me when my workout logs are flagged for review.
-                                  </FormDescription>
-                                </div>
-                                <FormControl>
-                                  <Switch
-                                    checked={field.value}
-                                    onCheckedChange={field.onChange}
-                                  />
-                                </FormControl>
-                              </FormItem>
-                            )}
-                          />
+                          {form.watch('notification_mode') !== 'none' && (
+                            <div className="space-y-3">
+                              <FormField
+                                control={form.control}
+                                name="notify_on_verified"
+                                render={({ field }) => (
+                                  <FormItem className="flex items-center justify-between rounded-lg border border-border/50 p-3 bg-secondary/20">
+                                    <div className="space-y-0.5">
+                                      <FormLabel className="text-sm">Verification Confirmations</FormLabel>
+                                      <FormDescription className="text-xs">
+                                        Notify me when my workout logs are verified.
+                                      </FormDescription>
+                                    </div>
+                                    <FormControl>
+                                      <Switch
+                                        checked={field.value}
+                                        onCheckedChange={field.onChange}
+                                      />
+                                    </FormControl>
+                                  </FormItem>
+                                )}
+                              />
+
+                              <FormField
+                                control={form.control}
+                                name="notify_on_flagged"
+                                render={({ field }) => (
+                                  <FormItem className="flex items-center justify-between rounded-lg border border-border/50 p-3 bg-secondary/20">
+                                    <div className="space-y-0.5">
+                                      <FormLabel className="text-sm">Flag Alerts</FormLabel>
+                                      <FormDescription className="text-xs">
+                                        Notify me when my workout logs are flagged for review.
+                                      </FormDescription>
+                                    </div>
+                                    <FormControl>
+                                      <Switch
+                                        checked={field.value}
+                                        onCheckedChange={field.onChange}
+                                      />
+                                    </FormControl>
+                                  </FormItem>
+                                )}
+                              />
+                            </div>
+                          )}
                         </div>
                       )}
                     </div>
