@@ -16,6 +16,7 @@ import LeaderboardUnits from "./pages/LeaderboardUnits";
 import Auth from "./pages/Auth";
 import AdminVerifyLogs from "./pages/AdminVerifyLogs";
 import Notifications from "./pages/Notifications";
+import Terms from "./pages/Terms";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -40,6 +41,7 @@ const App = () => (
             <Route path="/auth" element={<Auth />} />
             <Route path="/admin/verify-logs" element={<AdminVerifyLogs />} />
             <Route path="/notifications" element={<Notifications />} />
+            <Route path="/terms" element={<Terms />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
           </Routes>

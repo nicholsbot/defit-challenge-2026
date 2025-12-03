@@ -74,12 +74,12 @@ const Footer = () => {
               © 2024 Double Eagle Fitness Challenge. All rights reserved.
             </p>
             <div className="flex items-center gap-4 text-muted-foreground text-sm">
-              <a href="#" className="hover:text-foreground transition-colors">
+              <Link to="/privacy" className="hover:text-foreground transition-colors">
                 Privacy Policy
-              </a>
-              <a href="#" className="hover:text-foreground transition-colors">
+              </Link>
+              <Link to="/terms" className="hover:text-foreground transition-colors">
                 Terms of Use
-              </a>
+              </Link>
             </div>
           </div>
         </div>
