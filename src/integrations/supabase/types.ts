@@ -14,16 +14,229 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      cardio_logs: {
+        Row: {
+          cardio_type: Database["public"]["Enums"]["cardio_type"]
+          created_at: string
+          date: string
+          distance: number
+          distance_unit: string
+          id: string
+          notes: string | null
+          user_id: string
+          verified: boolean
+          verified_at: string | null
+          verified_by: string | null
+        }
+        Insert: {
+          cardio_type: Database["public"]["Enums"]["cardio_type"]
+          created_at?: string
+          date: string
+          distance: number
+          distance_unit?: string
+          id?: string
+          notes?: string | null
+          user_id: string
+          verified?: boolean
+          verified_at?: string | null
+          verified_by?: string | null
+        }
+        Update: {
+          cardio_type?: Database["public"]["Enums"]["cardio_type"]
+          created_at?: string
+          date?: string
+          distance?: number
+          distance_unit?: string
+          id?: string
+          notes?: string | null
+          user_id?: string
+          verified?: boolean
+          verified_at?: string | null
+          verified_by?: string | null
+        }
+        Relationships: []
+      }
+      hiit_logs: {
+        Row: {
+          created_at: string
+          date: string
+          description: string | null
+          duration: number
+          id: string
+          user_id: string
+          verified: boolean
+          verified_at: string | null
+          verified_by: string | null
+        }
+        Insert: {
+          created_at?: string
+          date: string
+          description?: string | null
+          duration: number
+          id?: string
+          user_id: string
+          verified?: boolean
+          verified_at?: string | null
+          verified_by?: string | null
+        }
+        Update: {
+          created_at?: string
+          date?: string
+          description?: string | null
+          duration?: number
+          id?: string
+          user_id?: string
+          verified?: boolean
+          verified_at?: string | null
+          verified_by?: string | null
+        }
+        Relationships: []
+      }
+      profiles: {
+        Row: {
+          created_at: string
+          full_name: string | null
+          id: string
+          unit: string | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          full_name?: string | null
+          id?: string
+          unit?: string | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          full_name?: string | null
+          id?: string
+          unit?: string | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      strength_logs: {
+        Row: {
+          created_at: string
+          date: string
+          exercise_name: string
+          id: string
+          notes: string | null
+          reps_per_set: number
+          sets: number
+          total_weight: number
+          user_id: string
+          verified: boolean
+          verified_at: string | null
+          verified_by: string | null
+          weight_per_rep: number
+        }
+        Insert: {
+          created_at?: string
+          date: string
+          exercise_name: string
+          id?: string
+          notes?: string | null
+          reps_per_set: number
+          sets: number
+          total_weight: number
+          user_id: string
+          verified?: boolean
+          verified_at?: string | null
+          verified_by?: string | null
+          weight_per_rep: number
+        }
+        Update: {
+          created_at?: string
+          date?: string
+          exercise_name?: string
+          id?: string
+          notes?: string | null
+          reps_per_set?: number
+          sets?: number
+          total_weight?: number
+          user_id?: string
+          verified?: boolean
+          verified_at?: string | null
+          verified_by?: string | null
+          weight_per_rep?: number
+        }
+        Relationships: []
+      }
+      tmarm_logs: {
+        Row: {
+          created_at: string
+          date: string
+          description: string | null
+          duration: number
+          id: string
+          user_id: string
+          verified: boolean
+          verified_at: string | null
+          verified_by: string | null
+        }
+        Insert: {
+          created_at?: string
+          date: string
+          description?: string | null
+          duration: number
+          id?: string
+          user_id: string
+          verified?: boolean
+          verified_at?: string | null
+          verified_by?: string | null
+        }
+        Update: {
+          created_at?: string
+          date?: string
+          description?: string | null
+          duration?: number
+          id?: string
+          user_id?: string
+          verified?: boolean
+          verified_at?: string | null
+          verified_by?: string | null
+        }
+        Relationships: []
+      }
+      user_roles: {
+        Row: {
+          id: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Insert: {
+          id?: string
+          role?: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Update: {
+          id?: string
+          role?: Database["public"]["Enums"]["app_role"]
+          user_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      has_role: {
+        Args: {
+          _role: Database["public"]["Enums"]["app_role"]
+          _user_id: string
+        }
+        Returns: boolean
+      }
     }
     Enums: {
-      [_ in never]: never
+      app_role: "admin" | "soldier"
+      cardio_type: "run_walk_ruck" | "bike" | "swim" | "row_elliptical"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -150,6 +363,9 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      app_role: ["admin", "soldier"],
+      cardio_type: ["run_walk_ruck", "bike", "swim", "row_elliptical"],
+    },
   },
 } as const

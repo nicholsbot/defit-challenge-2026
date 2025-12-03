@@ -31,7 +31,7 @@ import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { useToast } from '@/hooks/use-toast';
 import { useWorkout } from '@/contexts/WorkoutContext';
-import { CardioType, CARDIO_TYPE_LABELS, metersToMiles, generateId } from '@/types/workout';
+import { CardioType, CARDIO_TYPE_LABELS, metersToMiles } from '@/types/workout';
 
 const cardioSchema = z.object({
   date: z.date({ required_error: 'Date is required' }),
@@ -68,14 +68,12 @@ export function CardioForm() {
         ? metersToMiles(data.distance) 
         : data.distance;
 
-      addCardioLog({
-        id: generateId(),
+      await addCardioLog({
         date: data.date,
         type: data.type as CardioType,
         distance: distanceInMiles,
         distanceUnit: data.distanceUnit,
         notes: data.notes,
-        createdAt: new Date(),
       });
 
       toast({
@@ -224,10 +222,6 @@ export function CardioForm() {
         />
 
         {/* TODO: Proof upload field placeholder */}
-        {/* <FormItem>
-          <FormLabel>Proof Upload (Optional)</FormLabel>
-          <Input type="file" accept="image/*" />
-        </FormItem> */}
 
         <Button type="submit" variant="hero" className="w-full" disabled={isSubmitting}>
           <Plus className="w-4 h-4 mr-2" />

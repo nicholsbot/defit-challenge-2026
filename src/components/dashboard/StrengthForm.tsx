@@ -10,7 +10,6 @@ import { Calendar } from '@/components/ui/calendar';
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -25,7 +24,6 @@ import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { useToast } from '@/hooks/use-toast';
 import { useWorkout } from '@/contexts/WorkoutContext';
-import { generateId } from '@/types/workout';
 
 const strengthSchema = z.object({
   date: z.date({ required_error: 'Date is required' }),
@@ -67,8 +65,7 @@ export function StrengthForm() {
     try {
       const totalWeight = data.sets * data.repsPerSet * data.weightPerRep;
 
-      addStrengthLog({
-        id: generateId(),
+      await addStrengthLog({
         date: data.date,
         exerciseName: data.exerciseName,
         sets: data.sets,
@@ -76,7 +73,6 @@ export function StrengthForm() {
         weightPerRep: data.weightPerRep,
         totalWeight,
         notes: data.notes,
-        createdAt: new Date(),
       });
 
       toast({
