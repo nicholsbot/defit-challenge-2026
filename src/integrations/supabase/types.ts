@@ -98,6 +98,7 @@ export type Database = {
           full_name: string | null
           id: string
           unit: string | null
+          unit_category: Database["public"]["Enums"]["unit_category"] | null
           updated_at: string
           user_id: string
         }
@@ -106,6 +107,7 @@ export type Database = {
           full_name?: string | null
           id?: string
           unit?: string | null
+          unit_category?: Database["public"]["Enums"]["unit_category"] | null
           updated_at?: string
           user_id: string
         }
@@ -114,6 +116,7 @@ export type Database = {
           full_name?: string | null
           id?: string
           unit?: string | null
+          unit_category?: Database["public"]["Enums"]["unit_category"] | null
           updated_at?: string
           user_id?: string
         }
@@ -237,6 +240,12 @@ export type Database = {
     Enums: {
       app_role: "admin" | "soldier"
       cardio_type: "run_walk_ruck" | "bike" | "swim" | "row_elliptical"
+      unit_category:
+        | "veterans"
+        | "government"
+        | "military_family"
+        | "civilian"
+        | "other"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -366,6 +375,13 @@ export const Constants = {
     Enums: {
       app_role: ["admin", "soldier"],
       cardio_type: ["run_walk_ruck", "bike", "swim", "row_elliptical"],
+      unit_category: [
+        "veterans",
+        "government",
+        "military_family",
+        "civilian",
+        "other",
+      ],
     },
   },
 } as const
