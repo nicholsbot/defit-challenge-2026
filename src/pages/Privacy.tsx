@@ -15,7 +15,7 @@ const Privacy = () => {
           Privacy Policy
         </h1>
         <p className="text-muted-foreground mb-8">
-          <strong>Effective Date:</strong> [INSERT EFFECTIVE DATE]
+          <strong>Effective Date:</strong> January 26, 2026
           <br />
           <strong>Last Updated:</strong> [INSERT LAST UPDATED DATE]
         </p>
