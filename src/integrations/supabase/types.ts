@@ -14,8 +14,45 @@ export type Database = {
   }
   public: {
     Tables: {
+      admin_audit_logs: {
+        Row: {
+          action: string
+          admin_id: string
+          comment: string | null
+          created_at: string
+          id: string
+          new_status: string | null
+          previous_status: string | null
+          target_id: string
+          target_table: string
+        }
+        Insert: {
+          action: string
+          admin_id: string
+          comment?: string | null
+          created_at?: string
+          id?: string
+          new_status?: string | null
+          previous_status?: string | null
+          target_id: string
+          target_table: string
+        }
+        Update: {
+          action?: string
+          admin_id?: string
+          comment?: string | null
+          created_at?: string
+          id?: string
+          new_status?: string | null
+          previous_status?: string | null
+          target_id?: string
+          target_table?: string
+        }
+        Relationships: []
+      }
       cardio_logs: {
         Row: {
+          admin_comment: string | null
           cardio_type: Database["public"]["Enums"]["cardio_type"]
           created_at: string
           date: string
@@ -29,6 +66,7 @@ export type Database = {
           verified_by: string | null
         }
         Insert: {
+          admin_comment?: string | null
           cardio_type: Database["public"]["Enums"]["cardio_type"]
           created_at?: string
           date: string
@@ -42,6 +80,7 @@ export type Database = {
           verified_by?: string | null
         }
         Update: {
+          admin_comment?: string | null
           cardio_type?: Database["public"]["Enums"]["cardio_type"]
           created_at?: string
           date?: string
@@ -58,6 +97,7 @@ export type Database = {
       }
       hiit_logs: {
         Row: {
+          admin_comment: string | null
           created_at: string
           date: string
           description: string | null
@@ -69,6 +109,7 @@ export type Database = {
           verified_by: string | null
         }
         Insert: {
+          admin_comment?: string | null
           created_at?: string
           date: string
           description?: string | null
@@ -80,6 +121,7 @@ export type Database = {
           verified_by?: string | null
         }
         Update: {
+          admin_comment?: string | null
           created_at?: string
           date?: string
           description?: string | null
@@ -124,6 +166,7 @@ export type Database = {
       }
       strength_logs: {
         Row: {
+          admin_comment: string | null
           created_at: string
           date: string
           exercise_name: string
@@ -139,6 +182,7 @@ export type Database = {
           weight_per_rep: number
         }
         Insert: {
+          admin_comment?: string | null
           created_at?: string
           date: string
           exercise_name: string
@@ -154,6 +198,7 @@ export type Database = {
           weight_per_rep: number
         }
         Update: {
+          admin_comment?: string | null
           created_at?: string
           date?: string
           exercise_name?: string
@@ -172,6 +217,7 @@ export type Database = {
       }
       tmarm_logs: {
         Row: {
+          admin_comment: string | null
           created_at: string
           date: string
           description: string | null
@@ -183,6 +229,7 @@ export type Database = {
           verified_by: string | null
         }
         Insert: {
+          admin_comment?: string | null
           created_at?: string
           date: string
           description?: string | null
@@ -194,6 +241,7 @@ export type Database = {
           verified_by?: string | null
         }
         Update: {
+          admin_comment?: string | null
           created_at?: string
           date?: string
           description?: string | null
@@ -246,6 +294,7 @@ export type Database = {
         | "military_family"
         | "civilian"
         | "other"
+      verification_status: "pending" | "verified" | "flagged"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -382,6 +431,7 @@ export const Constants = {
         "civilian",
         "other",
       ],
+      verification_status: ["pending", "verified", "flagged"],
     },
   },
 } as const

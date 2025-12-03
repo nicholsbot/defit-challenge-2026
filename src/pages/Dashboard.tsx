@@ -10,11 +10,13 @@ import { TMARMForm } from '@/components/dashboard/TMARMForm';
 import { ProgressSummary } from '@/components/dashboard/ProgressSummary';
 import { WorkoutProvider } from '@/contexts/WorkoutContext';
 import { useAuth } from '@/contexts/AuthContext';
-import { Clock, Dumbbell, Flame, Heart, BarChart3, ArrowLeft, LogOut, Loader2, History, Settings } from 'lucide-react';
+import { supabase } from '@/integrations/supabase/client';
+import { Clock, Dumbbell, Flame, Heart, BarChart3, ArrowLeft, LogOut, Loader2, History, Settings, Shield } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
 function DashboardContent() {
   const [activeTab, setActiveTab] = useState('summary');
+  const [isAdmin, setIsAdmin] = useState(false);
   const { user, signOut, loading } = useAuth();
   const navigate = useNavigate();
 
@@ -23,6 +25,21 @@ function DashboardContent() {
       navigate('/auth');
     }
   }, [user, loading, navigate]);
+
+  // Check admin status
+  useEffect(() => {
+    async function checkAdmin() {
+      if (!user) return;
+      const { data } = await supabase
+        .from('user_roles')
+        .select('role')
+        .eq('user_id', user.id)
+        .eq('role', 'admin')
+        .maybeSingle();
+      setIsAdmin(!!data);
+    }
+    if (user) checkAdmin();
+  }, [user]);
 
   const handleSignOut = async () => {
     await signOut();
@@ -56,7 +73,7 @@ function DashboardContent() {
               <ArrowLeft className="w-4 h-4" />
               Back to Home
             </Link>
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-2 flex-wrap">
               <Button 
                 variant="outline" 
                 size="sm" 
@@ -77,6 +94,19 @@ function DashboardContent() {
                   Profile
                 </Link>
               </Button>
+              {isAdmin && (
+                <Button 
+                  variant="outline" 
+                  size="sm" 
+                  asChild
+                  className="border-primary/50 text-primary"
+                >
+                  <Link to="/admin/verify-logs">
+                    <Shield className="w-4 h-4 mr-2" />
+                    Admin
+                  </Link>
+                </Button>
+              )}
               <Button 
                 variant="outline" 
                 size="sm" 
