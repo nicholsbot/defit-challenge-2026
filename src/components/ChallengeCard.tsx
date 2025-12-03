@@ -12,9 +12,9 @@ interface ChallengeCardProps {
 }
 
 const difficultyColors = {
-  Beginner: "text-[hsl(142,76%,50%)]",
-  Intermediate: "text-[hsl(45,100%,50%)]",
-  Advanced: "text-[hsl(0,84%,60%)]",
+  Beginner: "text-primary",
+  Intermediate: "text-[hsl(40,60%,55%)]",
+  Advanced: "text-destructive",
 };
 
 const ChallengeCard = ({
@@ -37,7 +37,7 @@ const ChallengeCard = ({
         />
         <div className="absolute inset-0 bg-gradient-to-t from-card to-transparent" />
         <div className="absolute top-4 left-4">
-          <span className="glass px-3 py-1 rounded-full text-xs font-semibold text-foreground">
+          <span className="glass px-3 py-1 rounded-full text-xs font-heading font-semibold text-foreground uppercase tracking-wider">
             {category}
           </span>
         </div>
@@ -47,7 +47,7 @@ const ChallengeCard = ({
       <div className="p-6">
         <div className="flex items-center gap-2 mb-3">
           <Flame className={`w-4 h-4 ${difficultyColors[difficulty]}`} />
-          <span className={`text-sm font-medium ${difficultyColors[difficulty]}`}>
+          <span className={`text-sm font-medium uppercase tracking-wide ${difficultyColors[difficulty]}`}>
             {difficulty}
           </span>
         </div>
@@ -70,8 +70,8 @@ const ChallengeCard = ({
           </div>
         </div>
 
-        <Button variant="outline" className="w-full">
-          Join Challenge
+        <Button variant="outline" className="w-full font-heading uppercase tracking-wider">
+          Join Mission
         </Button>
       </div>
     </div>
