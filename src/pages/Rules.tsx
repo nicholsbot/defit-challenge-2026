@@ -1,47 +1,39 @@
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { Button } from "@/components/ui/button";
-import { FileText, Clock, Flame, Dumbbell, Timer, Heart } from "lucide-react";
+import { FileText, Clock, Dumbbell, Flame, Heart, CheckCircle, AlertCircle } from "lucide-react";
 
 const eventCategories = [
   {
     icon: Clock,
-    title: "Cardio Events",
-    description: "Running, rucking, cycling, swimming, rowing",
-    minima: "Minimum 20 minutes continuous activity",
-    scoring: "1 point per minute (max 60 pts/session)",
+    title: "Cardio",
+    description: "Running, rucking, cycling, swimming, rowing, and other sustained aerobic activities",
+    requirements: "Required event category",
+    note: "Combining cardio events to establish required totals within this category is permitted",
     color: "text-primary",
   },
   {
     icon: Dumbbell,
-    title: "Strength Training",
-    description: "Weightlifting, calisthenics, resistance training",
-    minima: "Minimum 30 minutes per session",
-    scoring: "1.5 points per minute (max 75 pts/session)",
+    title: "Strength & Resistance",
+    description: "Weightlifting, calisthenics, resistance training, and functional strength work",
+    requirements: "Required event category",
+    note: "Focus on compound movements and progressive overload",
     color: "text-primary",
   },
   {
     icon: Flame,
-    title: "HIIT / Metabolic",
-    description: "High-intensity intervals, circuit training, CrossFit-style",
-    minima: "Minimum 15 minutes of work",
-    scoring: "2 points per minute (max 60 pts/session)",
-    color: "text-primary",
-  },
-  {
-    icon: Timer,
-    title: "TMAR-M Events",
-    description: "Tactical Movement Assessment drills",
-    minima: "Complete standardized events",
-    scoring: "Bonus points based on performance tier",
+    title: "High-Intensity Interval Training (HIIT)",
+    description: "Circuit training, metabolic conditioning, CrossFit-style workouts, and interval sprints",
+    requirements: "Required event category",
+    note: "High effort intervals with structured rest periods",
     color: "text-primary",
   },
   {
     icon: Heart,
-    title: "Recovery / Mobility",
-    description: "Yoga, stretching, active recovery, foam rolling",
-    minima: "Minimum 20 minutes per session",
-    scoring: "0.5 points per minute (max 30 pts/session)",
+    title: "TMAR-M",
+    description: "Tactical Mobility Active Recovery and Mindfulness - yoga, stretching, mobility work, meditation",
+    requirements: "Required event category",
+    note: "Supports the spiritual readiness domain and physical recovery",
     color: "text-primary",
   },
 ];
@@ -59,7 +51,7 @@ const Rules = () => {
               Rules & <span className="text-gradient">Scoring</span>
             </h1>
             <p className="text-lg text-muted-foreground mb-8">
-              Understanding the challenge structure, event categories, and how points are calculated.
+              Understanding the challenge structure, required events, and how scores are calculated and validated.
             </p>
             <Button variant="hero" size="lg" className="gap-2">
               <FileText className="w-5 h-5" />
@@ -69,64 +61,61 @@ const Rules = () => {
         </div>
       </section>
 
-      {/* Overview Section */}
+      {/* Challenge Overview */}
       <section className="py-16">
         <div className="container px-4">
           <div className="glass rounded-2xl p-8 md:p-12 max-w-4xl mx-auto">
             <h2 className="text-2xl md:text-3xl font-bold mb-6 text-center">
-              Challenge <span className="text-gradient">Overview</span>
+              Challenge <span className="text-gradient">Timeline</span>
             </h2>
             <div className="grid md:grid-cols-3 gap-6 mb-8">
               <div className="text-center">
-                <div className="text-3xl font-heading font-bold text-gradient">12 Weeks</div>
-                <div className="text-muted-foreground text-sm uppercase tracking-wide">Challenge Duration</div>
+                <div className="text-3xl font-heading font-bold text-gradient">12 Jan 2026</div>
+                <div className="text-muted-foreground text-sm uppercase tracking-wide">Start Date</div>
               </div>
               <div className="text-center">
-                <div className="text-3xl font-heading font-bold text-gradient">5 Days/Week</div>
-                <div className="text-muted-foreground text-sm uppercase tracking-wide">Recommended Training</div>
+                <div className="text-3xl font-heading font-bold text-gradient">10 Weeks</div>
+                <div className="text-muted-foreground text-sm uppercase tracking-wide">Duration</div>
               </div>
               <div className="text-center">
-                <div className="text-3xl font-heading font-bold text-gradient">Weekly Logs</div>
-                <div className="text-muted-foreground text-sm uppercase tracking-wide">Submission Deadline</div>
+                <div className="text-3xl font-heading font-bold text-gradient">22 Mar 2026</div>
+                <div className="text-muted-foreground text-sm uppercase tracking-wide">End Date</div>
               </div>
             </div>
-            <p className="text-muted-foreground text-center">
-              Participants log their workouts weekly. Points accumulate throughout the challenge period. 
-              Final standings are validated by USARC representatives.
-            </p>
           </div>
         </div>
       </section>
 
-      {/* Event Categories */}
+      {/* Required Events */}
       <section className="py-16">
         <div className="container px-4">
           <div className="text-center mb-12">
             <h2 className="text-2xl md:text-4xl font-bold mb-4">
-              Event <span className="text-gradient">Categories</span>
+              Required <span className="text-gradient">Events</span>
             </h2>
             <p className="text-muted-foreground max-w-2xl mx-auto">
-              Points are awarded based on activity type, duration, and intensity.
+              Participants must complete activities in all four event categories throughout the challenge.
             </p>
           </div>
 
           <div className="space-y-6 max-w-4xl mx-auto">
             {eventCategories.map((category) => (
               <div key={category.title} className="glass rounded-2xl p-6 card-hover">
-                <div className="flex flex-col md:flex-row md:items-center gap-4">
+                <div className="flex flex-col md:flex-row md:items-start gap-4">
                   <div className="w-14 h-14 rounded-xl bg-primary/10 flex items-center justify-center flex-shrink-0">
                     <category.icon className={`w-7 h-7 ${category.color}`} />
                   </div>
                   <div className="flex-1">
-                    <h3 className="text-xl font-bold text-foreground mb-1">{category.title}</h3>
-                    <p className="text-muted-foreground text-sm mb-2">{category.description}</p>
-                    <div className="flex flex-wrap gap-4 text-sm">
-                      <span className="text-foreground/80">
-                        <strong className="text-primary">Minimum:</strong> {category.minima}
+                    <div className="flex items-center gap-2 mb-2">
+                      <h3 className="text-xl font-bold text-foreground">{category.title}</h3>
+                      <span className="text-xs px-2 py-0.5 rounded bg-primary/20 text-primary uppercase tracking-wide">
+                        Required
                       </span>
-                      <span className="text-foreground/80">
-                        <strong className="text-primary">Scoring:</strong> {category.scoring}
-                      </span>
+                    </div>
+                    <p className="text-muted-foreground text-sm mb-3">{category.description}</p>
+                    <div className="flex items-start gap-2 text-sm text-foreground/80">
+                      <CheckCircle className="w-4 h-4 text-primary mt-0.5 flex-shrink-0" />
+                      <span>{category.note}</span>
                     </div>
                   </div>
                 </div>
@@ -136,7 +125,43 @@ const Rules = () => {
         </div>
       </section>
 
-      {/* Scoring Algorithm */}
+      {/* Data Verification */}
+      <section className="py-16">
+        <div className="container px-4">
+          <div className="glass rounded-2xl p-8 md:p-12 max-w-4xl mx-auto">
+            <h2 className="text-2xl md:text-3xl font-bold mb-6 text-center">
+              Data <span className="text-gradient">Verification</span>
+            </h2>
+            <div className="space-y-4 text-muted-foreground">
+              <div className="flex items-start gap-3">
+                <AlertCircle className="w-5 h-5 text-primary mt-1 flex-shrink-0" />
+                <p>
+                  <strong className="text-foreground">Integrity Based:</strong> Data verification is 
+                  integrity based and entered by individual Soldiers on this website.
+                </p>
+              </div>
+              <div className="flex items-start gap-3">
+                <AlertCircle className="w-5 h-5 text-primary mt-1 flex-shrink-0" />
+                <p>
+                  <strong className="text-foreground">USARC Validation:</strong> Designated personnel 
+                  within the United States Army Reserve Command (USARC) will validate and calculate the scores.
+                </p>
+              </div>
+              <div className="flex items-start gap-3">
+                <AlertCircle className="w-5 h-5 text-primary mt-1 flex-shrink-0" />
+                <p>
+                  <strong className="text-foreground">Record Keeping:</strong> Throughout the challenge, 
+                  participants should maintain comprehensive records of their workouts. Accurate 
+                  record-keeping supports efficient validation and the integrity of data when the 
+                  verification process is required.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Scoring */}
       <section className="py-16">
         <div className="container px-4">
           <div className="glass rounded-2xl p-8 md:p-12 max-w-4xl mx-auto">
@@ -145,56 +170,49 @@ const Rules = () => {
             </h2>
             <div className="space-y-4 text-muted-foreground">
               <p>
-                <strong className="text-foreground">Weekly Score = </strong> 
-                Sum of all session points + Consistency Bonus + Variety Bonus
+                A scoring algorithm posted to the DEFIT website will rank individuals, teams, and units.
+                The algorithm considers:
               </p>
               <ul className="list-disc list-inside space-y-2 ml-4">
-                <li><strong className="text-foreground">Consistency Bonus:</strong> +50 points for logging 5+ days in a week</li>
-                <li><strong className="text-foreground">Variety Bonus:</strong> +25 points for completing 3+ different event types</li>
-                <li><strong className="text-foreground">Streak Multiplier:</strong> 1.1x multiplier for consecutive weeks of 5+ days</li>
+                <li>Completion of all required event categories</li>
+                <li>Duration and intensity of activities logged</li>
+                <li>Consistency throughout the 10-week challenge</li>
+                <li>Bonus points for exceeding minimum requirements</li>
               </ul>
-              <p className="text-sm italic">
-                Note: All logs are subject to verification. Flagged entries may require proof submission.
+              <p className="text-sm italic border-l-2 border-primary/50 pl-4 mt-6">
+                Detailed scoring breakdown and point values will be published prior to the challenge start date.
               </p>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Age/Gender Categories */}
+      {/* Competition Categories */}
       <section className="py-16">
         <div className="container px-4">
           <div className="text-center mb-12">
             <h2 className="text-2xl md:text-4xl font-bold mb-4">
-              Competition <span className="text-gradient">Categories</span>
+              Competition <span className="text-gradient">Levels</span>
             </h2>
           </div>
-          <div className="grid md:grid-cols-2 gap-6 max-w-3xl mx-auto">
+          <div className="grid md:grid-cols-3 gap-6 max-w-4xl mx-auto">
             <div className="glass rounded-2xl p-6">
-              <h3 className="text-xl font-bold text-foreground mb-4">Age Groups</h3>
-              <ul className="space-y-2 text-muted-foreground">
-                <li>• 17-21 years</li>
-                <li>• 22-26 years</li>
-                <li>• 27-31 years</li>
-                <li>• 32-36 years</li>
-                <li>• 37-41 years</li>
-                <li>• 42-46 years</li>
-                <li>• 47-51 years</li>
-                <li>• 52+ years</li>
-              </ul>
+              <h3 className="text-xl font-bold text-foreground mb-4">Individual</h3>
+              <p className="text-muted-foreground text-sm">
+                Soldiers compete individually to demonstrate personal fitness excellence and commitment.
+              </p>
             </div>
             <div className="glass rounded-2xl p-6">
-              <h3 className="text-xl font-bold text-foreground mb-4">Gender Categories</h3>
-              <ul className="space-y-2 text-muted-foreground">
-                <li>• Male</li>
-                <li>• Female</li>
-              </ul>
-              <h3 className="text-xl font-bold text-foreground mt-6 mb-4">Overall Standings</h3>
-              <ul className="space-y-2 text-muted-foreground">
-                <li>• Combined Leaderboard</li>
-                <li>• Age Group Leaderboard</li>
-                <li>• Gender Leaderboard</li>
-              </ul>
+              <h3 className="text-xl font-bold text-foreground mb-4">Team</h3>
+              <p className="text-muted-foreground text-sm">
+                Small groups combine their scores to compete as a unified team.
+              </p>
+            </div>
+            <div className="glass rounded-2xl p-6">
+              <h3 className="text-xl font-bold text-foreground mb-4">Unit</h3>
+              <p className="text-muted-foreground text-sm">
+                Small, medium, and large units compete in size-appropriate brackets.
+              </p>
             </div>
           </div>
         </div>
