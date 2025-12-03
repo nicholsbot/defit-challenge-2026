@@ -10,7 +10,7 @@ import { TMARMForm } from '@/components/dashboard/TMARMForm';
 import { ProgressSummary } from '@/components/dashboard/ProgressSummary';
 import { WorkoutProvider } from '@/contexts/WorkoutContext';
 import { useAuth } from '@/contexts/AuthContext';
-import { Clock, Dumbbell, Flame, Heart, BarChart3, ArrowLeft, LogOut, Loader2, History } from 'lucide-react';
+import { Clock, Dumbbell, Flame, Heart, BarChart3, ArrowLeft, LogOut, Loader2, History, Settings } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
 function DashboardContent() {
@@ -65,6 +65,16 @@ function DashboardContent() {
                 <Link to="/dashboard/history">
                   <History className="w-4 h-4 mr-2" />
                   History
+                </Link>
+              </Button>
+              <Button 
+                variant="outline" 
+                size="sm" 
+                asChild
+              >
+                <Link to="/profile/settings">
+                  <Settings className="w-4 h-4 mr-2" />
+                  Profile
                 </Link>
               </Button>
               <Button 
