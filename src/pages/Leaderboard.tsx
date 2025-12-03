@@ -192,6 +192,20 @@ export default function Leaderboard() {
         </div>
       </section>
 
+      {/* Navigation Tabs */}
+      <section className="pb-6">
+        <div className="container px-4">
+          <div className="flex justify-center gap-4">
+            <Button variant="default">
+              Individual Rankings
+            </Button>
+            <Button variant="outline" asChild>
+              <Link to="/leaderboard/units">Unit Rankings</Link>
+            </Button>
+          </div>
+        </div>
+      </section>
+
       {/* Stats Overview */}
       <section className="pb-8">
         <div className="container px-4">
