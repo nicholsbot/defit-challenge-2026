@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Play } from "lucide-react";
-import heroImage from "@/assets/hero-fitness.jpg";
+import heroImage from "@/assets/hero-military-training.jpg";
 
 const HeroSection = () => {
   return (
@@ -9,10 +9,10 @@ const HeroSection = () => {
       <div className="absolute inset-0 z-0">
         <img
           src={heroImage}
-          alt="Athlete running with dynamic neon lighting"
-          className="w-full h-full object-cover opacity-60"
+          alt="Military soldiers training at dawn, rucking and group PT"
+          className="w-full h-full object-cover opacity-50"
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-background via-background/80 to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-t from-background via-background/70 to-transparent" />
         <div className="absolute inset-0 bg-gradient-to-r from-background via-transparent to-background/50" />
       </div>
 

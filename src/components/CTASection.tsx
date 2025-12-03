@@ -1,5 +1,6 @@
 import { Button } from "@/components/ui/button";
-import { ArrowRight, Shield } from "lucide-react";
+import { ArrowRight } from "lucide-react";
+import kettlebellBadge from "@/assets/kettlebell-badge.png";
 
 const CTASection = () => {
   return (
@@ -11,9 +12,13 @@ const CTASection = () => {
 
       <div className="container px-4 relative">
         <div className="glass rounded-3xl p-8 md:p-16 text-center max-w-4xl mx-auto">
-          {/* Icon */}
-          <div className="w-16 h-16 mx-auto mb-8 rounded-2xl bg-primary flex items-center justify-center glow-primary animate-float">
-            <Shield className="w-8 h-8 text-primary-foreground" />
+          {/* Badge */}
+          <div className="w-24 h-24 mx-auto mb-8 animate-float">
+            <img 
+              src={kettlebellBadge} 
+              alt="Double Eagle Challenge Badge" 
+              className="w-full h-full object-contain drop-shadow-2xl"
+            />
           </div>
 
           {/* Content */}
