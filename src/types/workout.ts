@@ -9,6 +9,7 @@ export interface CardioLog {
   distance: number; // stored in miles
   distanceUnit: 'miles' | 'meters';
   notes?: string;
+  verified?: boolean;
   createdAt: Date;
 }
 
@@ -21,6 +22,7 @@ export interface StrengthLog {
   weightPerRep: number; // lbs
   totalWeight: number; // weight × reps × sets
   notes?: string;
+  verified?: boolean;
   createdAt: Date;
 }
 
@@ -29,6 +31,7 @@ export interface HIITLog {
   date: Date;
   duration: number; // minutes
   description?: string;
+  verified?: boolean;
   createdAt: Date;
 }
 
@@ -37,6 +40,7 @@ export interface TMARMLog {
   date: Date;
   duration: number; // minutes
   description?: string;
+  verified?: boolean;
   createdAt: Date;
 }
 
@@ -67,7 +71,7 @@ export const metersToMiles = (meters: number): number => {
   return meters * 0.000621371;
 };
 
-// Generate unique ID
+// Generate unique ID (kept for local fallback)
 export const generateId = (): string => {
   return `${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
 };
