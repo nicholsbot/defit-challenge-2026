@@ -14,6 +14,7 @@ import ProfileSettings from "./pages/ProfileSettings";
 import Leaderboard from "./pages/Leaderboard";
 import LeaderboardUnits from "./pages/LeaderboardUnits";
 import Auth from "./pages/Auth";
+import AdminVerifyLogs from "./pages/AdminVerifyLogs";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -36,6 +37,7 @@ const App = () => (
             <Route path="/dashboard/history" element={<WorkoutHistory />} />
             <Route path="/profile/settings" element={<ProfileSettings />} />
             <Route path="/auth" element={<Auth />} />
+            <Route path="/admin/verify-logs" element={<AdminVerifyLogs />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
           </Routes>
