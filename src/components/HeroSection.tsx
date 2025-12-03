@@ -22,46 +22,46 @@ const HeroSection = () => {
           {/* Badge */}
           <div className="inline-flex items-center gap-2 glass px-4 py-2 rounded-full mb-8">
             <span className="w-2 h-2 bg-primary rounded-full animate-pulse-glow" />
-            <span className="text-sm font-medium text-muted-foreground">
-              Over 50,000+ athletes competing
+            <span className="text-sm font-medium text-muted-foreground uppercase tracking-wider">
+              Over 50,000+ warriors competing
             </span>
           </div>
 
           {/* Headline */}
-          <h1 className="text-4xl md:text-6xl lg:text-7xl font-black mb-6 leading-tight">
-            Push Your Limits.
+          <h1 className="text-4xl md:text-6xl lg:text-7xl font-heading font-bold mb-6 leading-tight tracking-wider">
+            Forge Your Strength.
             <br />
-            <span className="text-gradient">Conquer Every Challenge.</span>
+            <span className="text-gradient">Earn Your Badge.</span>
           </h1>
 
           {/* Subheadline */}
           <p className="text-lg md:text-xl text-muted-foreground mb-10 max-w-xl mx-auto">
-            Join the ultimate fitness challenge platform. Compete with athletes worldwide, 
-            track your progress, and transform your body.
+            Join the ultimate military-style fitness challenge. Compete with warriors worldwide, 
+            track your progress, and prove your discipline.
           </p>
 
           {/* CTA Buttons */}
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-            <Button variant="hero" size="lg" className="w-full sm:w-auto">
-              Start Your Journey
+            <Button variant="hero" size="lg" className="w-full sm:w-auto font-heading">
+              Enlist Now
               <ArrowRight className="w-5 h-5" />
             </Button>
-            <Button variant="glass" size="lg" className="w-full sm:w-auto">
+            <Button variant="glass" size="lg" className="w-full sm:w-auto font-heading">
               <Play className="w-5 h-5" />
-              Watch Demo
+              Watch Briefing
             </Button>
           </div>
 
           {/* Stats */}
           <div className="grid grid-cols-3 gap-8 mt-16 max-w-lg mx-auto">
             {[
-              { value: "50K+", label: "Athletes" },
-              { value: "200+", label: "Challenges" },
-              { value: "1M+", label: "Workouts" },
+              { value: "50K+", label: "Warriors" },
+              { value: "200+", label: "Missions" },
+              { value: "1M+", label: "Reps Logged" },
             ].map((stat) => (
               <div key={stat.label} className="text-center">
-                <div className="text-2xl md:text-3xl font-bold text-gradient">{stat.value}</div>
-                <div className="text-sm text-muted-foreground mt-1">{stat.label}</div>
+                <div className="text-2xl md:text-3xl font-heading font-bold text-gradient">{stat.value}</div>
+                <div className="text-sm text-muted-foreground mt-1 uppercase tracking-wide">{stat.label}</div>
               </div>
             ))}
           </div>

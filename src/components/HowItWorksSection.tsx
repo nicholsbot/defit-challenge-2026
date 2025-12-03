@@ -3,23 +3,23 @@ import { Target, Users, Trophy, TrendingUp } from "lucide-react";
 const steps = [
   {
     icon: Target,
-    title: "Choose a Challenge",
-    description: "Browse hundreds of challenges across different fitness categories and difficulty levels.",
+    title: "Select Your Mission",
+    description: "Browse missions across different fitness categories and difficulty levels.",
   },
   {
     icon: Users,
-    title: "Join the Community",
-    description: "Connect with athletes worldwide, share progress, and motivate each other.",
+    title: "Join the Ranks",
+    description: "Connect with warriors worldwide, share progress, and push each other forward.",
   },
   {
     icon: TrendingUp,
     title: "Track Progress",
-    description: "Log your workouts, monitor improvements, and watch your stats grow daily.",
+    description: "Log your training, monitor improvements, and watch your stats grow daily.",
   },
   {
     icon: Trophy,
-    title: "Win Rewards",
-    description: "Complete challenges, climb the leaderboard, and earn amazing prizes.",
+    title: "Earn Your Badge",
+    description: "Complete missions, climb the leaderboard, and earn recognition.",
   },
 ];
 
@@ -29,11 +29,11 @@ const HowItWorksSection = () => {
       <div className="container px-4">
         {/* Header */}
         <div className="text-center mb-16">
-          <h2 className="text-3xl md:text-5xl font-black mb-4">
+          <h2 className="text-3xl md:text-5xl font-bold mb-4">
             How It <span className="text-gradient">Works</span>
           </h2>
           <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
-            Getting started is easy. Follow these simple steps and begin your transformation today.
+            Getting started is simple. Follow these steps and begin your training today.
           </p>
         </div>
 
@@ -51,7 +51,7 @@ const HowItWorksSection = () => {
 
               <div className="glass rounded-2xl p-8 text-center card-hover h-full">
                 {/* Step Number */}
-                <div className="absolute -top-3 left-1/2 -translate-x-1/2 w-7 h-7 rounded-full bg-primary text-primary-foreground text-sm font-bold flex items-center justify-center">
+                <div className="absolute -top-3 left-1/2 -translate-x-1/2 w-7 h-7 rounded-full bg-primary text-primary-foreground text-sm font-heading font-bold flex items-center justify-center">
                   {index + 1}
                 </div>
 

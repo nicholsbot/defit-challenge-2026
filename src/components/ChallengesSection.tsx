@@ -2,8 +2,8 @@ import ChallengeCard from "./ChallengeCard";
 
 const challenges = [
   {
-    title: "30-Day HIIT Burn",
-    description: "High-intensity interval training designed to torch calories and build endurance. Perfect for busy schedules.",
+    title: "30-Day Tactical HIIT",
+    description: "High-intensity interval training designed for combat readiness. Build endurance and mental toughness.",
     duration: "30 days",
     participants: 12453,
     difficulty: "Intermediate" as const,
@@ -12,7 +12,7 @@ const challenges = [
   },
   {
     title: "Strength Foundation",
-    description: "Build muscle and strength with progressive overload techniques. Includes full workout plans.",
+    description: "Build foundational strength with progressive overload. Essential for every warrior.",
     duration: "8 weeks",
     participants: 8921,
     difficulty: "Beginner" as const,
@@ -20,17 +20,17 @@ const challenges = [
     category: "Strength",
   },
   {
-    title: "Marathon Prep Elite",
-    description: "Prepare for your marathon with structured running programs and recovery protocols.",
+    title: "Ruck March Elite",
+    description: "Prepare for long-distance ruck marches with structured programs and recovery protocols.",
     duration: "16 weeks",
     participants: 3247,
     difficulty: "Advanced" as const,
     image: "https://images.unsplash.com/photo-1552674605-db6ffd4facb5?w=800&q=80",
-    category: "Running",
+    category: "Endurance",
   },
   {
-    title: "Core Crusher",
-    description: "Strengthen your core with targeted exercises. Build stability and definition.",
+    title: "Core Conditioning",
+    description: "Strengthen your core for stability under load. Build functional strength.",
     duration: "21 days",
     participants: 15678,
     difficulty: "Beginner" as const,
@@ -38,17 +38,17 @@ const challenges = [
     category: "Core",
   },
   {
-    title: "Flexibility Flow",
-    description: "Improve mobility and prevent injuries with daily stretching and yoga routines.",
+    title: "Mobility Protocol",
+    description: "Improve mobility and prevent injuries with tactical stretching routines.",
     duration: "14 days",
     participants: 9832,
     difficulty: "Beginner" as const,
     image: "https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?w=800&q=80",
-    category: "Yoga",
+    category: "Recovery",
   },
   {
     title: "Beast Mode",
-    description: "Extreme fitness challenge for experienced athletes. Push beyond your limits.",
+    description: "Extreme fitness challenge for hardened warriors. Push beyond your limits.",
     duration: "12 weeks",
     participants: 2156,
     difficulty: "Advanced" as const,
@@ -63,12 +63,12 @@ const ChallengesSection = () => {
       <div className="container px-4">
         {/* Header */}
         <div className="text-center mb-16">
-          <h2 className="text-3xl md:text-5xl font-black mb-4">
-            Active <span className="text-gradient">Challenges</span>
+          <h2 className="text-3xl md:text-5xl font-bold mb-4">
+            Active <span className="text-gradient">Missions</span>
           </h2>
           <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
-            Choose from hundreds of challenges designed by elite trainers. 
-            Start today and transform your fitness journey.
+            Choose from hundreds of missions designed by elite trainers. 
+            Begin your training and earn your badge.
           </p>
         </div>
 
@@ -81,8 +81,8 @@ const ChallengesSection = () => {
 
         {/* View All Button */}
         <div className="text-center mt-12">
-          <button className="text-primary font-semibold hover:underline underline-offset-4 transition-all">
-            View All Challenges →
+          <button className="text-primary font-heading font-semibold hover:underline underline-offset-4 transition-all uppercase tracking-wider">
+            View All Missions →
           </button>
         </div>
       </div>
