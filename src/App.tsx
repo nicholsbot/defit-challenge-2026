@@ -10,6 +10,7 @@ import Rules from "./pages/Rules";
 import Resources from "./pages/Resources";
 import Dashboard from "./pages/Dashboard";
 import WorkoutHistory from "./pages/WorkoutHistory";
+import ProfileSettings from "./pages/ProfileSettings";
 import Leaderboard from "./pages/Leaderboard";
 import LeaderboardUnits from "./pages/LeaderboardUnits";
 import Auth from "./pages/Auth";
@@ -33,6 +34,7 @@ const App = () => (
             <Route path="/leaderboard/units" element={<LeaderboardUnits />} />
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/dashboard/history" element={<WorkoutHistory />} />
+            <Route path="/profile/settings" element={<ProfileSettings />} />
             <Route path="/auth" element={<Auth />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
