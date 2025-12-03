@@ -228,6 +228,74 @@ Deno.serve(async (req) => {
         // Don't fail the request, just log the error
       }
 
+      // Get user info for email notification (background task)
+      const { data: logOwner } = await supabase
+        .from(tableName)
+        .select('user_id, date')
+        .eq('id', logId)
+        .single();
+
+      if (logOwner) {
+        // Get user email from auth
+        const { data: { users } } = await supabase.auth.admin.listUsers();
+        const ownerUser = users?.find(u => u.id === logOwner.user_id);
+        
+        // Get profile for name
+        const { data: ownerProfile } = await supabase
+          .from('profiles')
+          .select('full_name')
+          .eq('user_id', logOwner.user_id)
+          .maybeSingle();
+
+        if (ownerUser?.email) {
+          // Get log details for email
+          const { data: fullLog } = await supabase
+            .from(tableName)
+            .select('*')
+            .eq('id', logId)
+            .single();
+
+          let logDetails = '';
+          if (logType === 'cardio' && fullLog) {
+            logDetails = `${fullLog.distance} ${fullLog.distance_unit} (${fullLog.cardio_type?.replace('_', ' ')})`;
+          } else if (logType === 'strength' && fullLog) {
+            logDetails = `${fullLog.exercise_name}: ${fullLog.sets}×${fullLog.reps_per_set} @ ${fullLog.weight_per_rep}lbs`;
+          } else if ((logType === 'hiit' || logType === 'tmarm') && fullLog) {
+            logDetails = `${fullLog.duration} minutes`;
+          }
+
+          // Send email notification (fire and forget - don't block response)
+          const emailPayload = {
+            userId: logOwner.user_id,
+            userEmail: ownerUser.email,
+            userName: ownerProfile?.full_name || 'Participant',
+            logId: logId,
+            logType: logType,
+            logDate: new Date(logOwner.date).toLocaleDateString('en-US', { 
+              weekday: 'long', 
+              year: 'numeric', 
+              month: 'long', 
+              day: 'numeric' 
+            }),
+            logDetails: logDetails,
+            notificationType: action === 'verify' ? 'verified' : 'flagged',
+            adminComment: comment || undefined,
+          };
+
+          console.log('Triggering email notification:', emailPayload);
+
+          // Call email function asynchronously
+          fetch(`${supabaseUrl}/functions/v1/send-verification-email`, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${supabaseServiceKey}`,
+            },
+            body: JSON.stringify(emailPayload),
+          }).catch(err => console.error('Email notification failed:', err));
+        }
+      }
+
       console.log(`Successfully ${action}ed log ${logId}`);
 
       return new Response(

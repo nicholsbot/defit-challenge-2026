@@ -95,6 +95,42 @@ export type Database = {
         }
         Relationships: []
       }
+      email_logs: {
+        Row: {
+          created_at: string
+          error_message: string | null
+          id: string
+          log_id: string
+          log_type: string
+          notification_type: string
+          recipient_email: string
+          recipient_user_id: string
+          status: string
+        }
+        Insert: {
+          created_at?: string
+          error_message?: string | null
+          id?: string
+          log_id: string
+          log_type: string
+          notification_type: string
+          recipient_email: string
+          recipient_user_id: string
+          status?: string
+        }
+        Update: {
+          created_at?: string
+          error_message?: string | null
+          id?: string
+          log_id?: string
+          log_type?: string
+          notification_type?: string
+          recipient_email?: string
+          recipient_user_id?: string
+          status?: string
+        }
+        Relationships: []
+      }
       hiit_logs: {
         Row: {
           admin_comment: string | null
@@ -137,8 +173,11 @@ export type Database = {
       profiles: {
         Row: {
           created_at: string
+          email_notifications: boolean
           full_name: string | null
           id: string
+          notify_on_flagged: boolean
+          notify_on_verified: boolean
           unit: string | null
           unit_category: Database["public"]["Enums"]["unit_category"] | null
           updated_at: string
@@ -146,8 +185,11 @@ export type Database = {
         }
         Insert: {
           created_at?: string
+          email_notifications?: boolean
           full_name?: string | null
           id?: string
+          notify_on_flagged?: boolean
+          notify_on_verified?: boolean
           unit?: string | null
           unit_category?: Database["public"]["Enums"]["unit_category"] | null
           updated_at?: string
@@ -155,8 +197,11 @@ export type Database = {
         }
         Update: {
           created_at?: string
+          email_notifications?: boolean
           full_name?: string | null
           id?: string
+          notify_on_flagged?: boolean
+          notify_on_verified?: boolean
           unit?: string | null
           unit_category?: Database["public"]["Enums"]["unit_category"] | null
           updated_at?: string

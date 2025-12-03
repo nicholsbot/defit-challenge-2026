@@ -27,7 +27,8 @@ import {
   FormMessage,
 } from '@/components/ui/form';
 import { toast } from 'sonner';
-import { ArrowLeft, Loader2, User, Building2, Users, Save, CheckCircle2 } from 'lucide-react';
+import { ArrowLeft, Loader2, User, Building2, Users, Save, CheckCircle2, Bell, Mail } from 'lucide-react';
+import { Switch } from '@/components/ui/switch';
 import type { Database } from '@/integrations/supabase/types';
 
 type UnitCategory = Database['public']['Enums']['unit_category'];
@@ -44,6 +45,9 @@ const profileSchema = z.object({
   full_name: z.string().min(2, 'Name must be at least 2 characters').max(100, 'Name must be less than 100 characters'),
   unit: z.string().max(100, 'Unit name must be less than 100 characters').optional().or(z.literal('')),
   unit_category: z.enum(['veterans', 'government', 'military_family', 'civilian', 'other']).nullable(),
+  email_notifications: z.boolean(),
+  notify_on_verified: z.boolean(),
+  notify_on_flagged: z.boolean(),
 });
 
 type ProfileFormValues = z.infer<typeof profileSchema>;
@@ -61,6 +65,9 @@ export default function ProfileSettings() {
       full_name: '',
       unit: '',
       unit_category: null,
+      email_notifications: true,
+      notify_on_verified: true,
+      notify_on_flagged: true,
     },
   });
 
@@ -77,7 +84,7 @@ export default function ProfileSettings() {
       try {
         const { data, error } = await supabase
           .from('profiles')
-          .select('full_name, unit, unit_category')
+          .select('full_name, unit, unit_category, email_notifications, notify_on_verified, notify_on_flagged')
           .eq('user_id', user.id)
           .maybeSingle();
 
@@ -88,6 +95,9 @@ export default function ProfileSettings() {
             full_name: data.full_name || '',
             unit: data.unit || '',
             unit_category: data.unit_category,
+            email_notifications: data.email_notifications ?? true,
+            notify_on_verified: data.notify_on_verified ?? true,
+            notify_on_flagged: data.notify_on_flagged ?? true,
           });
         }
       } catch (error) {
@@ -114,6 +124,9 @@ export default function ProfileSettings() {
           full_name: values.full_name,
           unit: values.unit || null,
           unit_category: values.unit_category,
+          email_notifications: values.email_notifications,
+          notify_on_verified: values.notify_on_verified,
+          notify_on_flagged: values.notify_on_flagged,
         })
         .eq('user_id', user.id);
 
@@ -286,6 +299,88 @@ export default function ProfileSettings() {
                       </FormItem>
                     )}
                   />
+
+                  {/* Notification Preferences Section */}
+                  <div className="pt-6 border-t border-border">
+                    <div className="flex items-center gap-2 mb-4">
+                      <Bell className="w-5 h-5 text-primary" />
+                      <h3 className="font-heading font-bold">Email Notifications</h3>
+                    </div>
+                    
+                    <div className="space-y-4">
+                      {/* Master Toggle */}
+                      <FormField
+                        control={form.control}
+                        name="email_notifications"
+                        render={({ field }) => (
+                          <FormItem className="flex items-center justify-between rounded-lg border border-border p-4 bg-secondary/30">
+                            <div className="space-y-0.5">
+                              <FormLabel className="flex items-center gap-2">
+                                <Mail className="w-4 h-4 text-primary" />
+                                Enable Email Notifications
+                              </FormLabel>
+                              <FormDescription className="text-sm">
+                                Receive email updates about your workout log status changes.
+                              </FormDescription>
+                            </div>
+                            <FormControl>
+                              <Switch
+                                checked={field.value}
+                                onCheckedChange={field.onChange}
+                              />
+                            </FormControl>
+                          </FormItem>
+                        )}
+                      />
+
+                      {/* Conditional notification options */}
+                      {form.watch('email_notifications') && (
+                        <div className="ml-4 space-y-3 animate-fade-in">
+                          <FormField
+                            control={form.control}
+                            name="notify_on_verified"
+                            render={({ field }) => (
+                              <FormItem className="flex items-center justify-between rounded-lg border border-border/50 p-3 bg-secondary/20">
+                                <div className="space-y-0.5">
+                                  <FormLabel className="text-sm">Verification Confirmations</FormLabel>
+                                  <FormDescription className="text-xs">
+                                    Notify me when my workout logs are verified.
+                                  </FormDescription>
+                                </div>
+                                <FormControl>
+                                  <Switch
+                                    checked={field.value}
+                                    onCheckedChange={field.onChange}
+                                  />
+                                </FormControl>
+                              </FormItem>
+                            )}
+                          />
+
+                          <FormField
+                            control={form.control}
+                            name="notify_on_flagged"
+                            render={({ field }) => (
+                              <FormItem className="flex items-center justify-between rounded-lg border border-border/50 p-3 bg-secondary/20">
+                                <div className="space-y-0.5">
+                                  <FormLabel className="text-sm">Flag Alerts</FormLabel>
+                                  <FormDescription className="text-xs">
+                                    Notify me when my workout logs are flagged for review.
+                                  </FormDescription>
+                                </div>
+                                <FormControl>
+                                  <Switch
+                                    checked={field.value}
+                                    onCheckedChange={field.onChange}
+                                  />
+                                </FormControl>
+                              </FormItem>
+                            )}
+                          />
+                        </div>
+                      )}
+                    </div>
+                  </div>
 
                   {/* Submit Button */}
                   <div className="flex items-center justify-between pt-4">
