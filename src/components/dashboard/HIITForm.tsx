@@ -24,7 +24,6 @@ import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { useToast } from '@/hooks/use-toast';
 import { useWorkout } from '@/contexts/WorkoutContext';
-import { generateId } from '@/types/workout';
 
 const hiitSchema = z.object({
   date: z.date({ required_error: 'Date is required' }),
@@ -51,12 +50,10 @@ export function HIITForm() {
   const onSubmit = async (data: HIITFormValues) => {
     setIsSubmitting(true);
     try {
-      addHIITLog({
-        id: generateId(),
+      await addHIITLog({
         date: data.date,
         duration: data.duration,
         description: data.description,
-        createdAt: new Date(),
       });
 
       toast({

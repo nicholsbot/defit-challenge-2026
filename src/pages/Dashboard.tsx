@@ -1,5 +1,5 @@
-import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
@@ -9,10 +9,37 @@ import { HIITForm } from '@/components/dashboard/HIITForm';
 import { TMARMForm } from '@/components/dashboard/TMARMForm';
 import { ProgressSummary } from '@/components/dashboard/ProgressSummary';
 import { WorkoutProvider } from '@/contexts/WorkoutContext';
-import { Clock, Dumbbell, Flame, Heart, BarChart3, ArrowLeft } from 'lucide-react';
+import { useAuth } from '@/contexts/AuthContext';
+import { Clock, Dumbbell, Flame, Heart, BarChart3, ArrowLeft, LogOut, Loader2 } from 'lucide-react';
+import { Button } from '@/components/ui/button';
 
 function DashboardContent() {
   const [activeTab, setActiveTab] = useState('summary');
+  const { user, signOut, loading } = useAuth();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!loading && !user) {
+      navigate('/auth');
+    }
+  }, [user, loading, navigate]);
+
+  const handleSignOut = async () => {
+    await signOut();
+    navigate('/');
+  };
+
+  if (loading) {
+    return (
+      <main className="min-h-screen bg-background texture-canvas flex items-center justify-center">
+        <Loader2 className="w-8 h-8 animate-spin text-primary" />
+      </main>
+    );
+  }
+
+  if (!user) {
+    return null;
+  }
 
   return (
     <main className="min-h-screen bg-background texture-canvas">
@@ -21,18 +48,32 @@ function DashboardContent() {
       {/* Header */}
       <section className="pt-24 pb-8">
         <div className="container px-4">
-          <Link 
-            to="/" 
-            className="inline-flex items-center gap-2 text-muted-foreground hover:text-foreground transition-colors mb-4"
-          >
-            <ArrowLeft className="w-4 h-4" />
-            Back to Home
-          </Link>
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-4">
+            <Link 
+              to="/" 
+              className="inline-flex items-center gap-2 text-muted-foreground hover:text-foreground transition-colors"
+            >
+              <ArrowLeft className="w-4 h-4" />
+              Back to Home
+            </Link>
+            <Button 
+              variant="outline" 
+              size="sm" 
+              onClick={handleSignOut}
+              className="w-fit"
+            >
+              <LogOut className="w-4 h-4 mr-2" />
+              Sign Out
+            </Button>
+          </div>
           <h1 className="text-3xl md:text-4xl font-heading font-bold">
             Workout <span className="text-gradient">Dashboard</span>
           </h1>
           <p className="text-muted-foreground mt-2">
             Log your workouts and track progress toward the 10-week challenge minimums.
+          </p>
+          <p className="text-sm text-primary mt-1">
+            Logged in as: {user.email}
           </p>
         </div>
       </section>
@@ -158,41 +199,18 @@ function DashboardContent() {
         </div>
       </section>
 
-      {/* API Contract Documentation (for developers) */}
-      {/* 
-        Backend API Endpoints:
-        
-        POST /api/logs/cardio
-        Body: { date, type, distance, distanceUnit, notes? }
-        Response: { id, ...log, createdAt }
-        
-        POST /api/logs/strength  
-        Body: { date, exerciseName, sets, repsPerSet, weightPerRep, notes? }
-        Response: { id, ...log, totalWeight, createdAt }
-        
-        POST /api/logs/hiit
-        Body: { date, duration, description? }
-        Response: { id, ...log, createdAt }
-        
-        POST /api/logs/tmarm
-        Body: { date, duration, description? }
-        Response: { id, ...log, createdAt }
-        
-        GET /api/logs/summary
-        Response: { cardioMiles, strengthLbs, hiitMinutes, tmarmMinutes, logs[] }
-        
-        GET /api/logs?type=cardio|strength|hiit|tmarm&startDate=&endDate=
-        Response: { logs[] }
-        
-        DELETE /api/logs/:id
-        Response: { success: boolean }
-        
-        Admin Endpoints:
-        GET /api/admin/logs/flagged
-        PUT /api/admin/logs/:id/verify
-        PUT /api/admin/logs/:id/reject
-        GET /api/admin/export?format=csv|json
-      */}
+      {/* Data verified by USARC notice */}
+      <section className="pb-16">
+        <div className="container px-4">
+          <div className="glass rounded-2xl p-6 border border-primary/20">
+            <p className="text-sm text-muted-foreground text-center">
+              <strong className="text-foreground">Data Verification:</strong> All workout logs are integrity-based 
+              and may be validated by designated USARC personnel. Maintain comprehensive records to support 
+              efficient validation when required.
+            </p>
+          </div>
+        </div>
+      </section>
 
       <Footer />
     </main>

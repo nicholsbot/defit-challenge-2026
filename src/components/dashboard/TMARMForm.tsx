@@ -24,7 +24,6 @@ import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { useToast } from '@/hooks/use-toast';
 import { useWorkout } from '@/contexts/WorkoutContext';
-import { generateId } from '@/types/workout';
 
 const tmarmSchema = z.object({
   date: z.date({ required_error: 'Date is required' }),
@@ -51,12 +50,10 @@ export function TMARMForm() {
   const onSubmit = async (data: TMARMFormValues) => {
     setIsSubmitting(true);
     try {
-      addTMARMLog({
-        id: generateId(),
+      await addTMARMLog({
         date: data.date,
         duration: data.duration,
         description: data.description,
-        createdAt: new Date(),
       });
 
       toast({
