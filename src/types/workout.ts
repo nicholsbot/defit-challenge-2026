@@ -1,0 +1,73 @@
+// Workout Types for DEFIT Challenge
+
+export type CardioType = 'run_walk_ruck' | 'bike' | 'swim' | 'row_elliptical';
+
+export interface CardioLog {
+  id: string;
+  date: Date;
+  type: CardioType;
+  distance: number; // stored in miles
+  distanceUnit: 'miles' | 'meters';
+  notes?: string;
+  createdAt: Date;
+}
+
+export interface StrengthLog {
+  id: string;
+  date: Date;
+  exerciseName: string;
+  sets: number;
+  repsPerSet: number;
+  weightPerRep: number; // lbs
+  totalWeight: number; // weight × reps × sets
+  notes?: string;
+  createdAt: Date;
+}
+
+export interface HIITLog {
+  id: string;
+  date: Date;
+  duration: number; // minutes
+  description?: string;
+  createdAt: Date;
+}
+
+export interface TMARMLog {
+  id: string;
+  date: Date;
+  duration: number; // minutes
+  description?: string;
+  createdAt: Date;
+}
+
+export interface WorkoutTotals {
+  cardioMiles: number;
+  strengthLbs: number;
+  hiitMinutes: number;
+  tmarmMinutes: number;
+}
+
+// 10-week challenge minimums (example values - adjust as needed)
+export const CHALLENGE_MINIMUMS: WorkoutTotals = {
+  cardioMiles: 120,      // 12 miles per week average
+  strengthLbs: 50000,    // Total lbs lifted
+  hiitMinutes: 300,      // 30 min/week average
+  tmarmMinutes: 200,     // 20 min/week average
+};
+
+export const CARDIO_TYPE_LABELS: Record<CardioType, string> = {
+  run_walk_ruck: 'Run/Walk/Ruck',
+  bike: 'Bike',
+  swim: 'Swim',
+  row_elliptical: 'Row/Elliptical',
+};
+
+// Utility: Convert meters to miles
+export const metersToMiles = (meters: number): number => {
+  return meters * 0.000621371;
+};
+
+// Generate unique ID
+export const generateId = (): string => {
+  return `${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
+};
