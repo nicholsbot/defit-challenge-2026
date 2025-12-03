@@ -4,35 +4,35 @@ import { Button } from "@/components/ui/button";
 import { Menu, X } from "lucide-react";
 import doubleEagleLogo from "@/assets/double-eagle-logo.png";
 import NotificationBell from "@/components/NotificationBell";
-
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const location = useLocation();
-
-  const navLinks = [
-    { label: "About", href: "/about" },
-    { label: "Rules", href: "/rules" },
-    { label: "Leaderboard", href: "/leaderboard" },
-    { label: "Resources", href: "/resources" },
-    { label: "Dashboard", href: "/dashboard" },
-  ];
-
+  const navLinks = [{
+    label: "About",
+    href: "/about"
+  }, {
+    label: "Rules",
+    href: "/rules"
+  }, {
+    label: "Leaderboard",
+    href: "/leaderboard"
+  }, {
+    label: "Resources",
+    href: "/resources"
+  }, {
+    label: "Dashboard",
+    href: "/dashboard"
+  }];
   const isActive = (href: string) => {
     if (href.startsWith("/#")) return false;
     return location.pathname === href;
   };
-
-  return (
-    <nav className="fixed top-0 left-0 right-0 z-50 glass">
+  return <nav className="fixed top-0 left-0 right-0 z-50 glass">
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
           <Link to="/" className="flex items-center gap-3 group">
-            <img 
-              src={doubleEagleLogo} 
-              alt="DEFIT Challenge" 
-              className="w-12 h-12 object-contain"
-            />
+            <img alt="DEFIT Challenge" className="w-12 h-12 object-contain" src="/lovable-uploads/05b3a5cd-a9cc-4574-a110-60ed211a9be6.png" />
             <span className="text-lg font-heading font-bold text-foreground uppercase tracking-wider hidden sm:block">
               DEFIT
             </span>
@@ -40,27 +40,11 @@ const Navbar = () => {
 
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center gap-6">
-            {navLinks.map((link) => (
-              link.href.startsWith("/#") ? (
-                <a
-                  key={link.label}
-                  href={link.href}
-                  className="text-muted-foreground hover:text-foreground transition-colors duration-200 font-medium uppercase tracking-wide text-sm"
-                >
+            {navLinks.map(link => link.href.startsWith("/#") ? <a key={link.label} href={link.href} className="text-muted-foreground hover:text-foreground transition-colors duration-200 font-medium uppercase tracking-wide text-sm">
                   {link.label}
-                </a>
-              ) : (
-                <Link
-                  key={link.label}
-                  to={link.href}
-                  className={`transition-colors duration-200 font-medium uppercase tracking-wide text-sm ${
-                    isActive(link.href) ? "text-primary" : "text-muted-foreground hover:text-foreground"
-                  }`}
-                >
+                </a> : <Link key={link.label} to={link.href} className={`transition-colors duration-200 font-medium uppercase tracking-wide text-sm ${isActive(link.href) ? "text-primary" : "text-muted-foreground hover:text-foreground"}`}>
                   {link.label}
-                </Link>
-              )
-            ))}
+                </Link>)}
           </div>
 
           {/* CTA Button & Notifications */}
@@ -74,52 +58,26 @@ const Navbar = () => {
           {/* Mobile Menu Button & Notifications */}
           <div className="md:hidden flex items-center gap-2">
             <NotificationBell />
-            <button
-              className="text-foreground p-2"
-              onClick={() => setIsOpen(!isOpen)}
-              aria-label="Toggle menu"
-            >
+            <button className="text-foreground p-2" onClick={() => setIsOpen(!isOpen)} aria-label="Toggle menu">
               {isOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
             </button>
           </div>
         </div>
 
         {/* Mobile Navigation */}
-        {isOpen && (
-          <div className="md:hidden py-4 border-t border-border">
+        {isOpen && <div className="md:hidden py-4 border-t border-border">
             <div className="flex flex-col gap-4">
-              {navLinks.map((link) => (
-                link.href.startsWith("/#") ? (
-                  <a
-                    key={link.label}
-                    href={link.href}
-                    className="text-muted-foreground hover:text-foreground transition-colors duration-200 font-medium py-2 uppercase tracking-wide"
-                    onClick={() => setIsOpen(false)}
-                  >
+              {navLinks.map(link => link.href.startsWith("/#") ? <a key={link.label} href={link.href} className="text-muted-foreground hover:text-foreground transition-colors duration-200 font-medium py-2 uppercase tracking-wide" onClick={() => setIsOpen(false)}>
                     {link.label}
-                  </a>
-                ) : (
-                  <Link
-                    key={link.label}
-                    to={link.href}
-                    className={`transition-colors duration-200 font-medium py-2 uppercase tracking-wide ${
-                      isActive(link.href) ? "text-primary" : "text-muted-foreground hover:text-foreground"
-                    }`}
-                    onClick={() => setIsOpen(false)}
-                  >
+                  </a> : <Link key={link.label} to={link.href} className={`transition-colors duration-200 font-medium py-2 uppercase tracking-wide ${isActive(link.href) ? "text-primary" : "text-muted-foreground hover:text-foreground"}`} onClick={() => setIsOpen(false)}>
                     {link.label}
-                  </Link>
-                )
-              ))}
+                  </Link>)}
               <Button variant="default" size="default" className="mt-2" asChild>
                 <Link to="/dashboard" onClick={() => setIsOpen(false)}>Log Workout</Link>
               </Button>
             </div>
-          </div>
-        )}
+          </div>}
       </div>
-    </nav>
-  );
+    </nav>;
 };
-
 export default Navbar;
