@@ -1,37 +1,45 @@
 import { Link } from "react-router-dom";
 import doubleEagleLogo from "@/assets/double-eagle-logo.png";
-
 const footerLinks = {
-  Challenge: [
-    { label: "About DEFIT", href: "/about" },
-    { label: "Rules & Scoring", href: "/rules" },
-    { label: "Leaderboard", href: "/#leaderboard" },
-  ],
-  Resources: [
-    { label: "H2F Resources", href: "/resources" },
-    { label: "Training Tips", href: "/resources" },
-    { label: "Safety Guidelines", href: "/resources" },
-  ],
-  Support: [
-    { label: "Contact POC", href: "#" },
-    { label: "FAQ", href: "#" },
-    { label: "Report Issue", href: "#" },
-  ],
+  Challenge: [{
+    label: "About DEFIT",
+    href: "/about"
+  }, {
+    label: "Rules & Scoring",
+    href: "/rules"
+  }, {
+    label: "Leaderboard",
+    href: "/#leaderboard"
+  }],
+  Resources: [{
+    label: "H2F Resources",
+    href: "/resources"
+  }, {
+    label: "Training Tips",
+    href: "/resources"
+  }, {
+    label: "Safety Guidelines",
+    href: "/resources"
+  }],
+  Support: [{
+    label: "Contact POC",
+    href: "#"
+  }, {
+    label: "FAQ",
+    href: "#"
+  }, {
+    label: "Report Issue",
+    href: "#"
+  }]
 };
-
 const Footer = () => {
-  return (
-    <footer className="py-16 border-t border-border">
+  return <footer className="py-16 border-t border-border">
       <div className="container px-4">
         <div className="grid grid-cols-2 md:grid-cols-4 gap-8 mb-12">
           {/* Brand */}
           <div className="col-span-2 md:col-span-1">
             <Link to="/" className="flex items-center gap-3 mb-4">
-              <img 
-                src={doubleEagleLogo} 
-                alt="DEFIT Challenge" 
-                className="w-12 h-12 object-contain"
-              />
+              <img alt="DEFIT Challenge" className="w-12 h-12 object-contain" src="/lovable-uploads/cc2d9315-be04-4d2c-a390-e524797420ec.png" />
               <span className="text-lg font-heading font-bold text-foreground uppercase tracking-wider">
                 DEFIT
               </span>
@@ -42,39 +50,20 @@ const Footer = () => {
           </div>
 
           {/* Links */}
-          {Object.entries(footerLinks).map(([category, links]) => (
-            <div key={category}>
+          {Object.entries(footerLinks).map(([category, links]) => <div key={category}>
               <h4 className="font-heading font-semibold text-foreground mb-4 uppercase tracking-wide">{category}</h4>
               <ul className="space-y-2">
-                {links.map((link) => (
-                  <li key={link.label}>
-                    {link.href.startsWith("/#") ? (
-                      <a
-                        href={link.href}
-                        className="text-muted-foreground hover:text-foreground transition-colors text-sm"
-                      >
+                {links.map(link => <li key={link.label}>
+                    {link.href.startsWith("/#") ? <a href={link.href} className="text-muted-foreground hover:text-foreground transition-colors text-sm">
                         {link.label}
-                      </a>
-                    ) : link.href.startsWith("#") ? (
-                      <a
-                        href={link.href}
-                        className="text-muted-foreground hover:text-foreground transition-colors text-sm"
-                      >
+                      </a> : link.href.startsWith("#") ? <a href={link.href} className="text-muted-foreground hover:text-foreground transition-colors text-sm">
                         {link.label}
-                      </a>
-                    ) : (
-                      <Link
-                        to={link.href}
-                        className="text-muted-foreground hover:text-foreground transition-colors text-sm"
-                      >
+                      </a> : <Link to={link.href} className="text-muted-foreground hover:text-foreground transition-colors text-sm">
                         {link.label}
-                      </Link>
-                    )}
-                  </li>
-                ))}
+                      </Link>}
+                  </li>)}
               </ul>
-            </div>
-          ))}
+            </div>)}
         </div>
 
         {/* Disclaimer */}
@@ -98,8 +87,6 @@ const Footer = () => {
           </div>
         </div>
       </div>
-    </footer>
-  );
+    </footer>;
 };
-
 export default Footer;
