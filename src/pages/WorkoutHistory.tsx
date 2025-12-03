@@ -1,5 +1,5 @@
-import { useState, useEffect, useMemo } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { useState, useEffect, useMemo, useRef } from 'react';
+import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 import { format } from 'date-fns';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
@@ -56,11 +56,52 @@ function WorkoutHistoryContent() {
   const { user, loading: authLoading } = useAuth();
   const { cardioLogs, strengthLogs, hiitLogs, tmarmLogs, loading: workoutLoading } = useWorkout();
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
 
   const [typeFilter, setTypeFilter] = useState<ActivityType>('all');
   const [statusFilter, setStatusFilter] = useState<StatusFilter>('all');
   const [sortField, setSortField] = useState<SortField>('date');
   const [sortOrder, setSortOrder] = useState<SortOrder>('desc');
+  const [highlightedId, setHighlightedId] = useState<string | null>(null);
+  
+  const highlightRef = useRef<HTMLTableRowElement | null>(null);
+  const mobileHighlightRef = useRef<HTMLDivElement | null>(null);
+
+  // Handle highlight params from notifications
+  useEffect(() => {
+    const highlightId = searchParams.get('highlight');
+    const highlightType = searchParams.get('type');
+    
+    if (highlightId && highlightType) {
+      setHighlightedId(highlightId);
+      
+      // Set filter to show the highlighted log type
+      if (['cardio', 'strength', 'hiit', 'tmarm'].includes(highlightType)) {
+        setTypeFilter(highlightType as ActivityType);
+      }
+      
+      // Clear highlight after 5 seconds
+      const timer = setTimeout(() => {
+        setHighlightedId(null);
+      }, 5000);
+      
+      return () => clearTimeout(timer);
+    }
+  }, [searchParams]);
+
+  // Scroll to highlighted element
+  useEffect(() => {
+    if (highlightedId) {
+      const timer = setTimeout(() => {
+        if (highlightRef.current) {
+          highlightRef.current.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        } else if (mobileHighlightRef.current) {
+          mobileHighlightRef.current.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+      }, 100);
+      return () => clearTimeout(timer);
+    }
+  }, [highlightedId, typeFilter]);
 
   useEffect(() => {
     if (!authLoading && !user) {
@@ -199,6 +240,8 @@ function WorkoutHistoryContent() {
     }
   };
 
+  const isHighlighted = (logId: string) => logId === highlightedId;
+
   if (authLoading || workoutLoading) {
     return (
       <main className="min-h-screen bg-background texture-canvas flex items-center justify-center">
@@ -326,8 +369,15 @@ function WorkoutHistoryContent() {
                     <TableBody>
                       {filteredLogs.map((log) => (
                         <TableRow 
-                          key={`${log.activityType}-${log.id}`} 
-                          className={`border-border ${!log.verified ? 'bg-amber-500/5' : ''}`}
+                          key={`${log.activityType}-${log.id}`}
+                          ref={isHighlighted(log.id) ? highlightRef : null}
+                          className={`border-border transition-all duration-300 ${
+                            !log.verified ? 'bg-amber-500/5' : ''
+                          } ${
+                            isHighlighted(log.id) 
+                              ? 'ring-2 ring-primary bg-primary/10 animate-pulse' 
+                              : ''
+                          }`}
                         >
                           <TableCell className="font-medium">
                             {format(log.date, 'MMM d, yyyy')}
@@ -360,7 +410,14 @@ function WorkoutHistoryContent() {
                   {filteredLogs.map((log) => (
                     <div 
                       key={`${log.activityType}-${log.id}`}
-                      className={`p-4 ${!log.verified ? 'bg-amber-500/5' : ''}`}
+                      ref={isHighlighted(log.id) ? mobileHighlightRef : null}
+                      className={`p-4 transition-all duration-300 ${
+                        !log.verified ? 'bg-amber-500/5' : ''
+                      } ${
+                        isHighlighted(log.id) 
+                          ? 'ring-2 ring-primary bg-primary/10 animate-pulse' 
+                          : ''
+                      }`}
                     >
                       <div className="flex items-start justify-between gap-3 mb-3">
                         <div className="flex items-center gap-3">
@@ -388,36 +445,6 @@ function WorkoutHistoryContent() {
           </div>
         </div>
       </section>
-
-      {/* API Contract Note */}
-      {/* 
-        GET /api/logs/history
-        Query Params: type?, status?, page?, limit?, sortBy?, sortOrder?
-        
-        Response Schema:
-        {
-          "data": [
-            {
-              "id": "uuid",
-              "date": "2026-01-15",
-              "activityType": "cardio" | "strength" | "hiit" | "tmarm",
-              "subtype": "Run/Walk/Ruck" | "Bench Press" | etc,
-              "details": "5.25 miles" | "15000 lbs" | "30 minutes",
-              "verified": false,
-              "verifiedBy": null | "uuid",
-              "verifiedAt": null | "timestamp",
-              "proofUrl": null | "https://...",
-              "createdAt": "timestamp"
-            }
-          ],
-          "pagination": {
-            "page": 1,
-            "limit": 50,
-            "total": 127,
-            "hasMore": true
-          }
-        }
-      */}
 
       <Footer />
     </main>

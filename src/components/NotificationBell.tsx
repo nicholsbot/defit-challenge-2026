@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
-import { Bell } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
+import { Bell, CheckCircle2, AlertTriangle, CheckCheck } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
 import { supabase } from '@/integrations/supabase/client';
 import { Button } from '@/components/ui/button';
@@ -9,19 +9,21 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from '@/components/ui/popover';
-import { CheckCircle2, AlertTriangle } from 'lucide-react';
 
 interface Notification {
   id: string;
   type: string;
   title: string;
   message: string;
+  log_id: string | null;
+  log_type: string | null;
   is_read: boolean;
   created_at: string;
 }
 
 export default function NotificationBell() {
   const { user } = useAuth();
+  const navigate = useNavigate();
   const [unreadCount, setUnreadCount] = useState(0);
   const [recentNotifications, setRecentNotifications] = useState<Notification[]>([]);
   const [open, setOpen] = useState(false);
@@ -44,7 +46,7 @@ export default function NotificationBell() {
     const fetchRecent = async () => {
       const { data } = await supabase
         .from('notifications')
-        .select('id, type, title, message, is_read, created_at')
+        .select('id, type, title, message, log_id, log_type, is_read, created_at')
         .eq('user_id', user.id)
         .order('created_at', { ascending: false })
         .limit(5);
@@ -104,6 +106,46 @@ export default function NotificationBell() {
     return date.toLocaleDateString();
   };
 
+  const handleNotificationClick = async (notification: Notification) => {
+    // Mark as read if unread
+    if (!notification.is_read) {
+      await supabase
+        .from('notifications')
+        .update({ is_read: true })
+        .eq('id', notification.id);
+
+      setRecentNotifications((prev) =>
+        prev.map((n) => (n.id === notification.id ? { ...n, is_read: true } : n))
+      );
+      setUnreadCount((prev) => Math.max(0, prev - 1));
+    }
+
+    setOpen(false);
+
+    // Navigate to workout history with highlight params if log exists
+    if (notification.log_id && notification.log_type) {
+      navigate(`/workout-history?highlight=${notification.log_id}&type=${notification.log_type}`);
+    } else {
+      navigate('/notifications');
+    }
+  };
+
+  const markAllAsRead = async () => {
+    const unreadIds = recentNotifications.filter((n) => !n.is_read).map((n) => n.id);
+    if (unreadIds.length === 0) return;
+
+    await supabase
+      .from('notifications')
+      .update({ is_read: true })
+      .eq('user_id', user?.id)
+      .eq('is_read', false);
+
+    setRecentNotifications((prev) =>
+      prev.map((n) => ({ ...n, is_read: true }))
+    );
+    setUnreadCount(0);
+  };
+
   if (!user) return null;
 
   return (
@@ -122,9 +164,25 @@ export default function NotificationBell() {
         <div className="p-3 border-b border-border">
           <div className="flex items-center justify-between">
             <h4 className="font-heading font-bold">Notifications</h4>
-            {unreadCount > 0 && (
-              <span className="text-xs text-primary">{unreadCount} unread</span>
-            )}
+            <div className="flex items-center gap-2">
+              {unreadCount > 0 && (
+                <>
+                  <span className="text-xs text-primary">{unreadCount} unread</span>
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    className="h-7 px-2 text-xs"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      markAllAsRead();
+                    }}
+                  >
+                    <CheckCheck className="w-3 h-3 mr-1" />
+                    Mark all
+                  </Button>
+                </>
+              )}
+            </div>
           </div>
         </div>
 
@@ -136,9 +194,10 @@ export default function NotificationBell() {
           ) : (
             <div className="divide-y divide-border">
               {recentNotifications.map((notification) => (
-                <div
+                <button
                   key={notification.id}
-                  className={`p-3 hover:bg-secondary/50 transition-colors ${
+                  onClick={() => handleNotificationClick(notification)}
+                  className={`w-full text-left p-3 hover:bg-secondary/50 transition-colors ${
                     !notification.is_read ? 'bg-primary/5' : ''
                   }`}
                 >
@@ -161,20 +220,22 @@ export default function NotificationBell() {
                       </p>
                     </div>
                   </div>
-                </div>
+                </button>
               ))}
             </div>
           )}
         </div>
 
         <div className="p-2 border-t border-border">
-          <Link
-            to="/notifications"
-            onClick={() => setOpen(false)}
+          <button
+            onClick={() => {
+              setOpen(false);
+              navigate('/notifications');
+            }}
             className="block w-full text-center text-sm text-primary hover:underline py-2"
           >
             View all notifications
-          </Link>
+          </button>
         </div>
       </PopoverContent>
     </Popover>
