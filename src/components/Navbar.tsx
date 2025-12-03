@@ -34,7 +34,7 @@ const Navbar = () => {
           <Link to="/" className="flex items-center gap-3 group">
             <img alt="DEFIT Challenge" className="w-12 h-12 object-contain" src="/lovable-uploads/05b3a5cd-a9cc-4574-a110-60ed211a9be6.png" />
             <span className="text-lg font-heading font-bold text-foreground uppercase tracking-wider hidden sm:block">
-              DEFIT
+              DEFIT 2026 
             </span>
           </Link>
 
