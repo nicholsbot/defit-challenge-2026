@@ -13,6 +13,7 @@ const Navbar = () => {
     { label: "Rules", href: "/rules" },
     { label: "Leaderboard", href: "/#leaderboard" },
     { label: "Resources", href: "/resources" },
+    { label: "Dashboard", href: "/dashboard" },
   ];
 
   const isActive = (href: string) => {
@@ -37,7 +38,7 @@ const Navbar = () => {
           </Link>
 
           {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center gap-8">
+          <div className="hidden md:flex items-center gap-6">
             {navLinks.map((link) => (
               link.href.startsWith("/#") ? (
                 <a
@@ -63,8 +64,8 @@ const Navbar = () => {
 
           {/* CTA Button */}
           <div className="hidden md:block">
-            <Button variant="default" size="default">
-              Register
+            <Button variant="default" size="default" asChild>
+              <Link to="/dashboard">Log Workout</Link>
             </Button>
           </div>
 
@@ -105,8 +106,8 @@ const Navbar = () => {
                   </Link>
                 )
               ))}
-              <Button variant="default" size="default" className="mt-2">
-                Register
+              <Button variant="default" size="default" className="mt-2" asChild>
+                <Link to="/dashboard" onClick={() => setIsOpen(false)}>Log Workout</Link>
               </Button>
             </div>
           </div>
