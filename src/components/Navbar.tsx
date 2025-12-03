@@ -1,50 +1,70 @@
 import { useState } from "react";
+import { Link, useLocation } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Menu, X } from "lucide-react";
 import doubleEagleLogo from "@/assets/double-eagle-logo.png";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const location = useLocation();
 
   const navLinks = [
-    { label: "Challenges", href: "#challenges" },
-    { label: "Leaderboard", href: "#leaderboard" },
-    { label: "How It Works", href: "#how-it-works" },
+    { label: "About", href: "/about" },
+    { label: "Rules", href: "/rules" },
+    { label: "Leaderboard", href: "/#leaderboard" },
+    { label: "Resources", href: "/resources" },
   ];
+
+  const isActive = (href: string) => {
+    if (href.startsWith("/#")) return false;
+    return location.pathname === href;
+  };
 
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 glass">
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
-          <a href="/" className="flex items-center gap-3 group">
+          <Link to="/" className="flex items-center gap-3 group">
             <img 
               src={doubleEagleLogo} 
-              alt="Double Eagle Challenge" 
+              alt="DEFIT Challenge" 
               className="w-12 h-12 object-contain"
             />
             <span className="text-lg font-heading font-bold text-foreground uppercase tracking-wider hidden sm:block">
-              Double Eagle
+              DEFIT
             </span>
-          </a>
+          </Link>
 
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center gap-8">
             {navLinks.map((link) => (
-              <a
-                key={link.label}
-                href={link.href}
-                className="text-muted-foreground hover:text-foreground transition-colors duration-200 font-medium"
-              >
-                {link.label}
-              </a>
+              link.href.startsWith("/#") ? (
+                <a
+                  key={link.label}
+                  href={link.href}
+                  className="text-muted-foreground hover:text-foreground transition-colors duration-200 font-medium uppercase tracking-wide text-sm"
+                >
+                  {link.label}
+                </a>
+              ) : (
+                <Link
+                  key={link.label}
+                  to={link.href}
+                  className={`transition-colors duration-200 font-medium uppercase tracking-wide text-sm ${
+                    isActive(link.href) ? "text-primary" : "text-muted-foreground hover:text-foreground"
+                  }`}
+                >
+                  {link.label}
+                </Link>
+              )
             ))}
           </div>
 
           {/* CTA Button */}
           <div className="hidden md:block">
             <Button variant="default" size="default">
-              Join Now
+              Register
             </Button>
           </div>
 
@@ -63,17 +83,30 @@ const Navbar = () => {
           <div className="md:hidden py-4 border-t border-border">
             <div className="flex flex-col gap-4">
               {navLinks.map((link) => (
-                <a
-                  key={link.label}
-                  href={link.href}
-                  className="text-muted-foreground hover:text-foreground transition-colors duration-200 font-medium py-2"
-                  onClick={() => setIsOpen(false)}
-                >
-                  {link.label}
-                </a>
+                link.href.startsWith("/#") ? (
+                  <a
+                    key={link.label}
+                    href={link.href}
+                    className="text-muted-foreground hover:text-foreground transition-colors duration-200 font-medium py-2 uppercase tracking-wide"
+                    onClick={() => setIsOpen(false)}
+                  >
+                    {link.label}
+                  </a>
+                ) : (
+                  <Link
+                    key={link.label}
+                    to={link.href}
+                    className={`transition-colors duration-200 font-medium py-2 uppercase tracking-wide ${
+                      isActive(link.href) ? "text-primary" : "text-muted-foreground hover:text-foreground"
+                    }`}
+                    onClick={() => setIsOpen(false)}
+                  >
+                    {link.label}
+                  </Link>
+                )
               ))}
               <Button variant="default" size="default" className="mt-2">
-                Join Now
+                Register
               </Button>
             </div>
           </div>

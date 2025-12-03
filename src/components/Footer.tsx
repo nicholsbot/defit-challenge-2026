@@ -1,31 +1,43 @@
+import { Link } from "react-router-dom";
 import doubleEagleLogo from "@/assets/double-eagle-logo.png";
 
 const footerLinks = {
-  Product: ["Features", "Missions", "Pricing", "Mobile App"],
-  Company: ["About", "Careers", "Press", "Blog"],
-  Support: ["Help Center", "Contact", "Privacy", "Terms"],
-  Social: ["Twitter", "Instagram", "YouTube", "Discord"],
+  Challenge: [
+    { label: "About DEFIT", href: "/about" },
+    { label: "Rules & Scoring", href: "/rules" },
+    { label: "Leaderboard", href: "/#leaderboard" },
+  ],
+  Resources: [
+    { label: "H2F Resources", href: "/resources" },
+    { label: "Training Tips", href: "/resources" },
+    { label: "Safety Guidelines", href: "/resources" },
+  ],
+  Support: [
+    { label: "Contact POC", href: "#" },
+    { label: "FAQ", href: "#" },
+    { label: "Report Issue", href: "#" },
+  ],
 };
 
 const Footer = () => {
   return (
     <footer className="py-16 border-t border-border">
       <div className="container px-4">
-        <div className="grid grid-cols-2 md:grid-cols-5 gap-8 mb-12">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-8 mb-12">
           {/* Brand */}
           <div className="col-span-2 md:col-span-1">
-            <a href="/" className="flex items-center gap-3 mb-4">
+            <Link to="/" className="flex items-center gap-3 mb-4">
               <img 
                 src={doubleEagleLogo} 
-                alt="Double Eagle Challenge" 
+                alt="DEFIT Challenge" 
                 className="w-12 h-12 object-contain"
               />
               <span className="text-lg font-heading font-bold text-foreground uppercase tracking-wider">
-                Double Eagle
+                DEFIT
               </span>
-            </a>
+            </Link>
             <p className="text-muted-foreground text-sm">
-              Forge your strength. Earn your badge.
+              Reserve Ready. Unit Strong.
             </p>
           </div>
 
@@ -35,13 +47,29 @@ const Footer = () => {
               <h4 className="font-heading font-semibold text-foreground mb-4 uppercase tracking-wide">{category}</h4>
               <ul className="space-y-2">
                 {links.map((link) => (
-                  <li key={link}>
-                    <a
-                      href="#"
-                      className="text-muted-foreground hover:text-foreground transition-colors text-sm"
-                    >
-                      {link}
-                    </a>
+                  <li key={link.label}>
+                    {link.href.startsWith("/#") ? (
+                      <a
+                        href={link.href}
+                        className="text-muted-foreground hover:text-foreground transition-colors text-sm"
+                      >
+                        {link.label}
+                      </a>
+                    ) : link.href.startsWith("#") ? (
+                      <a
+                        href={link.href}
+                        className="text-muted-foreground hover:text-foreground transition-colors text-sm"
+                      >
+                        {link.label}
+                      </a>
+                    ) : (
+                      <Link
+                        to={link.href}
+                        className="text-muted-foreground hover:text-foreground transition-colors text-sm"
+                      >
+                        {link.label}
+                      </Link>
+                    )}
                   </li>
                 ))}
               </ul>
@@ -49,18 +77,24 @@ const Footer = () => {
           ))}
         </div>
 
-        {/* Bottom */}
-        <div className="pt-8 border-t border-border flex flex-col md:flex-row items-center justify-between gap-4">
-          <p className="text-muted-foreground text-sm">
-            © 2024 Double Eagle Challenge. All rights reserved.
+        {/* Disclaimer */}
+        <div className="pt-8 border-t border-border">
+          <p className="text-muted-foreground text-xs text-center mb-4">
+            <strong>Disclaimer:</strong> Results are unofficial until validated by USARC representatives. 
+            This challenge is for fitness motivation purposes and does not replace official Army fitness assessments.
           </p>
-          <div className="flex items-center gap-4 text-muted-foreground text-sm">
-            <a href="#" className="hover:text-foreground transition-colors">
-              Privacy Policy
-            </a>
-            <a href="#" className="hover:text-foreground transition-colors">
-              Terms of Service
-            </a>
+          <div className="flex flex-col md:flex-row items-center justify-between gap-4">
+            <p className="text-muted-foreground text-sm">
+              © 2024 Double Eagle Fitness Challenge. All rights reserved.
+            </p>
+            <div className="flex items-center gap-4 text-muted-foreground text-sm">
+              <a href="#" className="hover:text-foreground transition-colors">
+                Privacy Policy
+              </a>
+              <a href="#" className="hover:text-foreground transition-colors">
+                Terms of Use
+              </a>
+            </div>
           </div>
         </div>
       </div>
