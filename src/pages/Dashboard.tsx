@@ -10,7 +10,7 @@ import { TMARMForm } from '@/components/dashboard/TMARMForm';
 import { ProgressSummary } from '@/components/dashboard/ProgressSummary';
 import { WorkoutProvider } from '@/contexts/WorkoutContext';
 import { useAuth } from '@/contexts/AuthContext';
-import { Clock, Dumbbell, Flame, Heart, BarChart3, ArrowLeft, LogOut, Loader2 } from 'lucide-react';
+import { Clock, Dumbbell, Flame, Heart, BarChart3, ArrowLeft, LogOut, Loader2, History } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
 function DashboardContent() {
@@ -56,15 +56,26 @@ function DashboardContent() {
               <ArrowLeft className="w-4 h-4" />
               Back to Home
             </Link>
-            <Button 
-              variant="outline" 
-              size="sm" 
-              onClick={handleSignOut}
-              className="w-fit"
-            >
-              <LogOut className="w-4 h-4 mr-2" />
-              Sign Out
-            </Button>
+            <div className="flex items-center gap-2">
+              <Button 
+                variant="outline" 
+                size="sm" 
+                asChild
+              >
+                <Link to="/dashboard/history">
+                  <History className="w-4 h-4 mr-2" />
+                  History
+                </Link>
+              </Button>
+              <Button 
+                variant="outline" 
+                size="sm" 
+                onClick={handleSignOut}
+              >
+                <LogOut className="w-4 h-4 mr-2" />
+                Sign Out
+              </Button>
+            </div>
           </div>
           <h1 className="text-3xl md:text-4xl font-heading font-bold">
             Workout <span className="text-gradient">Dashboard</span>
