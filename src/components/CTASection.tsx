@@ -1,10 +1,8 @@
 import { Button } from "@/components/ui/button";
 import { ArrowRight } from "lucide-react";
 import kettlebellBadge from "@/assets/kettlebell-badge.png";
-
 const CTASection = () => {
-  return (
-    <section className="py-24 relative overflow-hidden">
+  return <section className="py-24 relative overflow-hidden">
       {/* Background Effects */}
       <div className="absolute inset-0">
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full bg-primary/10 blur-[120px]" />
@@ -14,11 +12,7 @@ const CTASection = () => {
         <div className="glass rounded-3xl p-8 md:p-16 text-center max-w-4xl mx-auto">
           {/* Badge */}
           <div className="w-24 h-24 mx-auto mb-8 animate-float">
-            <img 
-              src={kettlebellBadge} 
-              alt="Double Eagle Challenge Badge" 
-              className="w-full h-full object-contain drop-shadow-2xl"
-            />
+            <img alt="Double Eagle Challenge Badge" className="w-full h-full object-contain drop-shadow-2xl" src="/lovable-uploads/ea5fb597-0bc6-44fc-b3a1-9564dd8b720a.png" />
           </div>
 
           {/* Content */}
@@ -44,8 +38,6 @@ const CTASection = () => {
           </div>
         </div>
       </div>
-    </section>
-  );
+    </section>;
 };
-
 export default CTASection;
