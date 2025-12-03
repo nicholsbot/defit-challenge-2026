@@ -16,7 +16,7 @@ const challenges = [
     duration: "8 weeks",
     participants: 8921,
     difficulty: "Beginner" as const,
-    image: "https://images.unsplash.com/photo-1581009146145-b5ef050c149a?w=800&q=80",
+    image: "https://images.unsplash.com/photo-1517836357463-d25dfeac3438?w=800&q=80",
     category: "Strength",
   },
   {
