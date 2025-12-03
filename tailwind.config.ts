@@ -80,7 +80,7 @@ export default {
       },
       backgroundImage: {
         'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
-        'hero-gradient': 'linear-gradient(135deg, hsl(var(--primary) / 0.1) 0%, transparent 50%)',
+        'hero-gradient': 'linear-gradient(135deg, hsl(var(--primary) / 0.15) 0%, transparent 50%)',
       },
     },
   },
