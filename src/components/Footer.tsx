@@ -39,7 +39,7 @@ const Footer = () => {
           {/* Brand */}
           <div className="col-span-2 md:col-span-1">
             <Link to="/" className="flex items-center gap-3 mb-4">
-              <img alt="DEFIT Challenge" className="w-12 h-12 object-contain" src="/lovable-uploads/cc2d9315-be04-4d2c-a390-e524797420ec.png" />
+              <img alt="DEFIT Challenge" className="w-48 h-48 object-contain" src="/lovable-uploads/cc2d9315-be04-4d2c-a390-e524797420ec.png" />
               <span className="text-lg font-heading font-bold text-foreground uppercase tracking-wider">
                 DEFIT
               </span>
