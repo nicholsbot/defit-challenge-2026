@@ -10,6 +10,7 @@ import Rules from "./pages/Rules";
 import Resources from "./pages/Resources";
 import Dashboard from "./pages/Dashboard";
 import WorkoutHistory from "./pages/WorkoutHistory";
+import Leaderboard from "./pages/Leaderboard";
 import Auth from "./pages/Auth";
 import NotFound from "./pages/NotFound";
 
@@ -27,6 +28,7 @@ const App = () => (
             <Route path="/about" element={<About />} />
             <Route path="/rules" element={<Rules />} />
             <Route path="/resources" element={<Resources />} />
+            <Route path="/leaderboard" element={<Leaderboard />} />
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/dashboard/history" element={<WorkoutHistory />} />
             <Route path="/auth" element={<Auth />} />
