@@ -11,7 +11,7 @@ const CTASection = () => {
       <div className="container px-4 relative">
         <div className="glass rounded-3xl p-8 md:p-16 text-center max-w-4xl mx-auto">
           {/* Badge */}
-          <div className="w-24 h-24 mx-auto mb-8 animate-float">
+          <div className="w-32 h-32 md:w-40 md:h-40 mx-auto mb-8 animate-float">
             <img alt="Double Eagle Challenge Badge" className="w-full h-full object-contain drop-shadow-2xl" src="/lovable-uploads/ea5fb597-0bc6-44fc-b3a1-9564dd8b720a.png" />
           </div>
 
