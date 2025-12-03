@@ -1,5 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Play } from "lucide-react";
+import { Link } from "react-router-dom";
 import heroImage from "@/assets/hero-military-training.jpg";
 
 const HeroSection = () => {
@@ -23,41 +24,42 @@ const HeroSection = () => {
           <div className="inline-flex items-center gap-2 glass px-4 py-2 rounded-full mb-8">
             <span className="w-2 h-2 bg-primary rounded-full animate-pulse-glow" />
             <span className="text-sm font-medium text-muted-foreground uppercase tracking-wider">
-              Over 50,000+ warriors competing
+              Army Reserve Fitness Challenge
             </span>
           </div>
 
           {/* Headline */}
           <h1 className="text-4xl md:text-6xl lg:text-7xl font-heading font-bold mb-6 leading-tight tracking-wider">
-            Forge Your Strength.
+            Reserve Ready.
             <br />
-            <span className="text-gradient">Earn Your Badge.</span>
+            <span className="text-gradient">Unit Strong.</span>
           </h1>
 
           {/* Subheadline */}
           <p className="text-lg md:text-xl text-muted-foreground mb-10 max-w-xl mx-auto">
-            Join the ultimate military-style fitness challenge. Compete with warriors worldwide, 
-            track your progress, and prove your discipline.
+            The Double Eagle Fitness Challenge. Build strength, earn recognition, 
+            and compete with Soldiers across the Army Reserve.
           </p>
 
           {/* CTA Buttons */}
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
             <Button variant="hero" size="lg" className="w-full sm:w-auto font-heading">
-              Enlist Now
+              Register Now
               <ArrowRight className="w-5 h-5" />
             </Button>
-            <Button variant="glass" size="lg" className="w-full sm:w-auto font-heading">
-              <Play className="w-5 h-5" />
-              Watch Briefing
+            <Button variant="glass" size="lg" className="w-full sm:w-auto font-heading" asChild>
+              <Link to="/about">
+                Learn More
+              </Link>
             </Button>
           </div>
 
           {/* Stats */}
           <div className="grid grid-cols-3 gap-8 mt-16 max-w-lg mx-auto">
             {[
-              { value: "50K+", label: "Warriors" },
-              { value: "200+", label: "Missions" },
-              { value: "1M+", label: "Reps Logged" },
+              { value: "12", label: "Week Challenge" },
+              { value: "5", label: "H2F Domains" },
+              { value: "∞", label: "Potential" },
             ].map((stat) => (
               <div key={stat.label} className="text-center">
                 <div className="text-2xl md:text-3xl font-heading font-bold text-gradient">{stat.value}</div>
