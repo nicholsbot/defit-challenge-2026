@@ -240,14 +240,14 @@ Deno.serve(async (req) => {
         const { data: { users } } = await supabase.auth.admin.listUsers();
         const ownerUser = users?.find(u => u.id === logOwner.user_id);
         
-        // Get profile for name
+        // Get profile for name and notification preferences
         const { data: ownerProfile } = await supabase
           .from('profiles')
-          .select('full_name')
+          .select('full_name, email_notifications, notification_mode, notify_on_verified, notify_on_flagged')
           .eq('user_id', logOwner.user_id)
           .maybeSingle();
 
-        if (ownerUser?.email) {
+        if (ownerUser?.email && ownerProfile) {
           // Get log details for email
           const { data: fullLog } = await supabase
             .from(tableName)
@@ -264,35 +264,66 @@ Deno.serve(async (req) => {
             logDetails = `${fullLog.duration} minutes`;
           }
 
-          // Send email notification (fire and forget - don't block response)
-          const emailPayload = {
-            userId: logOwner.user_id,
-            userEmail: ownerUser.email,
-            userName: ownerProfile?.full_name || 'Participant',
-            logId: logId,
-            logType: logType,
-            logDate: new Date(logOwner.date).toLocaleDateString('en-US', { 
-              weekday: 'long', 
-              year: 'numeric', 
-              month: 'long', 
-              day: 'numeric' 
-            }),
-            logDetails: logDetails,
-            notificationType: action === 'verify' ? 'verified' : 'flagged',
-            adminComment: comment || undefined,
-          };
+          // Check user notification preferences
+          const notificationMode = (ownerProfile as any).notification_mode || 'immediate';
+          const shouldNotify = ownerProfile.email_notifications && (
+            (action === 'verify' && ownerProfile.notify_on_verified) ||
+            (action === 'flag' && ownerProfile.notify_on_flagged)
+          );
 
-          console.log('Triggering email notification:', emailPayload);
+          if (shouldNotify) {
+            if (notificationMode === 'digest') {
+              // Queue for daily digest
+              console.log('Queueing for daily digest:', logOwner.user_id);
+              const { error: queueError } = await supabase
+                .from('digest_queue')
+                .insert({
+                  user_id: logOwner.user_id,
+                  log_id: logId,
+                  log_type: logType,
+                  log_date: logOwner.date,
+                  log_details: logDetails,
+                  previous_status: previousStatus,
+                  new_status: action === 'verify' ? 'verified' : 'flagged',
+                  admin_comment: comment || null,
+                });
+              
+              if (queueError) {
+                console.error('Error queueing for digest:', queueError);
+              }
+            } else if (notificationMode === 'immediate') {
+              // Send immediate email notification
+              const emailPayload = {
+                userId: logOwner.user_id,
+                userEmail: ownerUser.email,
+                userName: ownerProfile?.full_name || 'Participant',
+                logId: logId,
+                logType: logType,
+                logDate: new Date(logOwner.date).toLocaleDateString('en-US', { 
+                  weekday: 'long', 
+                  year: 'numeric', 
+                  month: 'long', 
+                  day: 'numeric' 
+                }),
+                logDetails: logDetails,
+                notificationType: action === 'verify' ? 'verified' : 'flagged',
+                adminComment: comment || undefined,
+              };
 
-          // Call email function asynchronously
-          fetch(`${supabaseUrl}/functions/v1/send-verification-email`, {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-              'Authorization': `Bearer ${supabaseServiceKey}`,
-            },
-            body: JSON.stringify(emailPayload),
-          }).catch(err => console.error('Email notification failed:', err));
+              console.log('Triggering immediate email notification:', emailPayload);
+
+              // Call email function asynchronously
+              fetch(`${supabaseUrl}/functions/v1/send-verification-email`, {
+                method: 'POST',
+                headers: {
+                  'Content-Type': 'application/json',
+                  'Authorization': `Bearer ${supabaseServiceKey}`,
+                },
+                body: JSON.stringify(emailPayload),
+              }).catch(err => console.error('Email notification failed:', err));
+            }
+            // If mode is 'none', do nothing
+          }
         }
       }
 

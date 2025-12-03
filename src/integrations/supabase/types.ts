@@ -95,6 +95,51 @@ export type Database = {
         }
         Relationships: []
       }
+      digest_queue: {
+        Row: {
+          admin_comment: string | null
+          created_at: string
+          id: string
+          log_date: string
+          log_details: string
+          log_id: string
+          log_type: string
+          new_status: string
+          previous_status: string
+          processed: boolean
+          processed_at: string | null
+          user_id: string
+        }
+        Insert: {
+          admin_comment?: string | null
+          created_at?: string
+          id?: string
+          log_date: string
+          log_details: string
+          log_id: string
+          log_type: string
+          new_status: string
+          previous_status: string
+          processed?: boolean
+          processed_at?: string | null
+          user_id: string
+        }
+        Update: {
+          admin_comment?: string | null
+          created_at?: string
+          id?: string
+          log_date?: string
+          log_details?: string
+          log_id?: string
+          log_type?: string
+          new_status?: string
+          previous_status?: string
+          processed?: boolean
+          processed_at?: string | null
+          user_id?: string
+        }
+        Relationships: []
+      }
       email_logs: {
         Row: {
           created_at: string
@@ -176,6 +221,7 @@ export type Database = {
           email_notifications: boolean
           full_name: string | null
           id: string
+          notification_mode: string
           notify_on_flagged: boolean
           notify_on_verified: boolean
           unit: string | null
@@ -188,6 +234,7 @@ export type Database = {
           email_notifications?: boolean
           full_name?: string | null
           id?: string
+          notification_mode?: string
           notify_on_flagged?: boolean
           notify_on_verified?: boolean
           unit?: string | null
@@ -200,6 +247,7 @@ export type Database = {
           email_notifications?: boolean
           full_name?: string | null
           id?: string
+          notification_mode?: string
           notify_on_flagged?: boolean
           notify_on_verified?: boolean
           unit?: string | null
