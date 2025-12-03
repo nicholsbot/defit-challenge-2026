@@ -228,7 +228,7 @@ Deno.serve(async (req) => {
         // Don't fail the request, just log the error
       }
 
-      // Get user info for email notification (background task)
+      // Get user info for notification (background task)
       const { data: logOwner } = await supabase
         .from(tableName)
         .select('user_id, date')
@@ -243,12 +243,12 @@ Deno.serve(async (req) => {
         // Get profile for name and notification preferences
         const { data: ownerProfile } = await supabase
           .from('profiles')
-          .select('full_name, email_notifications, notification_mode, notify_on_verified, notify_on_flagged')
+          .select('full_name, email_notifications, notification_mode, notify_on_verified, notify_on_flagged, in_app_notifications')
           .eq('user_id', logOwner.user_id)
           .maybeSingle();
 
-        if (ownerUser?.email && ownerProfile) {
-          // Get log details for email
+        if (ownerProfile) {
+          // Get log details for notifications
           const { data: fullLog } = await supabase
             .from(tableName)
             .select('*')
@@ -264,14 +264,44 @@ Deno.serve(async (req) => {
             logDetails = `${fullLog.duration} minutes`;
           }
 
-          // Check user notification preferences
+          // Create in-app notification if enabled
+          const inAppEnabled = (ownerProfile as any).in_app_notifications ?? true;
+          if (inAppEnabled) {
+            const notificationTitle = action === 'verify' 
+              ? 'Workout Log Verified' 
+              : 'Workout Log Flagged';
+            const notificationMessage = action === 'verify'
+              ? `Your ${logType} log from ${new Date(logOwner.date).toLocaleDateString()} (${logDetails}) has been verified by an admin.`
+              : `Your ${logType} log from ${new Date(logOwner.date).toLocaleDateString()} (${logDetails}) has been flagged for review.`;
+
+            const { error: notifError } = await supabase
+              .from('notifications')
+              .insert({
+                user_id: logOwner.user_id,
+                type: action === 'verify' ? 'verified' : 'flagged',
+                title: notificationTitle,
+                message: notificationMessage,
+                log_id: logId,
+                log_type: logType,
+                log_date: logOwner.date,
+                admin_comment: comment || null,
+              });
+
+            if (notifError) {
+              console.error('Error creating in-app notification:', notifError);
+            } else {
+              console.log('In-app notification created for user:', logOwner.user_id);
+            }
+          }
+
+          // Check email notification preferences
           const notificationMode = (ownerProfile as any).notification_mode || 'immediate';
-          const shouldNotify = ownerProfile.email_notifications && (
+          const shouldEmailNotify = ownerProfile.email_notifications && ownerUser?.email && (
             (action === 'verify' && ownerProfile.notify_on_verified) ||
             (action === 'flag' && ownerProfile.notify_on_flagged)
           );
 
-          if (shouldNotify) {
+          if (shouldEmailNotify) {
             if (notificationMode === 'digest') {
               // Queue for daily digest
               console.log('Queueing for daily digest:', logOwner.user_id);

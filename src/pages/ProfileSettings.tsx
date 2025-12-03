@@ -55,6 +55,7 @@ const profileSchema = z.object({
   notification_mode: z.enum(['immediate', 'digest', 'none']),
   notify_on_verified: z.boolean(),
   notify_on_flagged: z.boolean(),
+  in_app_notifications: z.boolean(),
 });
 
 type ProfileFormValues = z.infer<typeof profileSchema>;
@@ -76,6 +77,7 @@ export default function ProfileSettings() {
       notification_mode: 'immediate',
       notify_on_verified: true,
       notify_on_flagged: true,
+      in_app_notifications: true,
     },
   });
 
@@ -92,7 +94,7 @@ export default function ProfileSettings() {
       try {
         const { data, error } = await supabase
           .from('profiles')
-          .select('full_name, unit, unit_category, email_notifications, notification_mode, notify_on_verified, notify_on_flagged')
+          .select('full_name, unit, unit_category, email_notifications, notification_mode, notify_on_verified, notify_on_flagged, in_app_notifications')
           .eq('user_id', user.id)
           .maybeSingle();
 
@@ -107,6 +109,7 @@ export default function ProfileSettings() {
             notification_mode: (data as any).notification_mode || 'immediate',
             notify_on_verified: data.notify_on_verified ?? true,
             notify_on_flagged: data.notify_on_flagged ?? true,
+            in_app_notifications: (data as any).in_app_notifications ?? true,
           });
         }
       } catch (error) {
@@ -137,6 +140,7 @@ export default function ProfileSettings() {
           notification_mode: values.notification_mode,
           notify_on_verified: values.notify_on_verified,
           notify_on_flagged: values.notify_on_flagged,
+          in_app_notifications: values.in_app_notifications,
         } as any)
         .eq('user_id', user.id);
 
@@ -314,7 +318,38 @@ export default function ProfileSettings() {
                   <div className="pt-6 border-t border-border">
                     <div className="flex items-center gap-2 mb-4">
                       <Bell className="w-5 h-5 text-primary" />
-                      <h3 className="font-heading font-bold">Email Notifications</h3>
+                      <h3 className="font-heading font-bold">Notifications</h3>
+                    </div>
+                    
+                    <div className="space-y-4">
+                      {/* In-App Notifications Toggle */}
+                      <FormField
+                        control={form.control}
+                        name="in_app_notifications"
+                        render={({ field }) => (
+                          <FormItem className="flex items-center justify-between rounded-lg border border-border p-4 bg-secondary/30">
+                            <div className="space-y-0.5">
+                              <FormLabel className="flex items-center gap-2">
+                                <Bell className="w-4 h-4 text-primary" />
+                                In-App Notifications
+                              </FormLabel>
+                              <FormDescription className="text-sm">
+                                Show notifications in the notification center (bell icon).
+                              </FormDescription>
+                            </div>
+                            <FormControl>
+                              <Switch
+                                checked={field.value}
+                                onCheckedChange={field.onChange}
+                              />
+                            </FormControl>
+                          </FormItem>
+                        )}
+                      />
+                    </div>
+
+                    <div className="mt-6 mb-4">
+                      <h4 className="text-sm font-medium text-muted-foreground uppercase tracking-wide">Email Settings</h4>
                     </div>
                     
                     <div className="space-y-4">

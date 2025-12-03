@@ -215,12 +215,55 @@ export type Database = {
         }
         Relationships: []
       }
+      notifications: {
+        Row: {
+          admin_comment: string | null
+          created_at: string
+          id: string
+          is_read: boolean
+          log_date: string | null
+          log_id: string | null
+          log_type: string | null
+          message: string
+          title: string
+          type: string
+          user_id: string
+        }
+        Insert: {
+          admin_comment?: string | null
+          created_at?: string
+          id?: string
+          is_read?: boolean
+          log_date?: string | null
+          log_id?: string | null
+          log_type?: string | null
+          message: string
+          title: string
+          type: string
+          user_id: string
+        }
+        Update: {
+          admin_comment?: string | null
+          created_at?: string
+          id?: string
+          is_read?: boolean
+          log_date?: string | null
+          log_id?: string | null
+          log_type?: string | null
+          message?: string
+          title?: string
+          type?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       profiles: {
         Row: {
           created_at: string
           email_notifications: boolean
           full_name: string | null
           id: string
+          in_app_notifications: boolean
           notification_mode: string
           notify_on_flagged: boolean
           notify_on_verified: boolean
@@ -234,6 +277,7 @@ export type Database = {
           email_notifications?: boolean
           full_name?: string | null
           id?: string
+          in_app_notifications?: boolean
           notification_mode?: string
           notify_on_flagged?: boolean
           notify_on_verified?: boolean
@@ -247,6 +291,7 @@ export type Database = {
           email_notifications?: boolean
           full_name?: string | null
           id?: string
+          in_app_notifications?: boolean
           notification_mode?: string
           notify_on_flagged?: boolean
           notify_on_verified?: boolean
