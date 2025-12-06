@@ -17,8 +17,8 @@ const Terms = () => {
               Terms of Service
             </h1>
             <p className="text-muted-foreground text-sm mb-8">
-              <strong>Effective Date:</strong> [INSERT EFFECTIVE DATE]<br />
-              <strong>Last Updated:</strong> [INSERT LAST UPDATED DATE]
+              <strong>Effective Date:</strong> January 26, 2026<br />
+              <strong>Last Updated:</strong> January 26, 2026
             </p>
 
             <section className="mb-10">
@@ -92,7 +92,7 @@ const Terms = () => {
 
               <h3 className="text-lg font-heading font-medium text-foreground mt-4 mb-2">3.3 Data Retention and Deletion</h3>
               <p>
-                We retain your data for as long as your account is active or as needed to provide you with the Service. You may request deletion of your account and associated personal data by contacting us at [INSERT CONTACT EMAIL]. Upon receiving a valid deletion request, we will:
+                We retain your data for as long as your account is active or as needed to provide you with the Service. You may request deletion of your account and associated personal data by contacting us at info@blackeagleproject.org. Upon receiving a valid deletion request, we will:
               </p>
               <ul>
                 <li>Remove or anonymize your personal information from our active systems within a reasonable timeframe.</li>
@@ -244,7 +244,7 @@ const Terms = () => {
               </h2>
               <h3 className="text-lg font-heading font-medium text-foreground mt-4 mb-2">8.1 Voluntary Termination</h3>
               <p>
-                You may terminate your account at any time by contacting us at [INSERT CONTACT EMAIL] or using the account deletion feature (if available) within the Service. Upon voluntary termination, your account will be deactivated and your personal data will be handled in accordance with Section 3.3 (Data Retention and Deletion).
+                You may terminate your account at any time by contacting us at info@blackeagleproject.org or using the account deletion feature (if available) within the Service. Upon voluntary termination, your account will be deactivated and your personal data will be handled in accordance with Section 3.3 (Data Retention and Deletion).
               </p>
 
               <h3 className="text-lg font-heading font-medium text-foreground mt-4 mb-2">8.2 Termination by Organization</h3>
@@ -296,12 +296,12 @@ const Terms = () => {
               </h2>
               <h3 className="text-lg font-heading font-medium text-foreground mt-4 mb-2">10.1 Governing Law</h3>
               <p>
-                These Terms of Service and any disputes arising out of or relating to these Terms or the Service shall be governed by and construed in accordance with the laws of the State of [INSERT STATE], United States, without regard to its conflict of law principles.
+                These Terms of Service and any disputes arising out of or relating to these Terms or the Service shall be governed by and construed in accordance with the laws of the State of Florida, United States, without regard to its conflict of law principles.
               </p>
 
               <h3 className="text-lg font-heading font-medium text-foreground mt-4 mb-2">10.2 Dispute Resolution</h3>
               <p>
-                Any dispute, controversy, or claim arising out of or relating to these Terms or the Service shall first be resolved through good-faith negotiation between the parties. If the dispute cannot be resolved through negotiation within thirty (30) days, either party may pursue resolution through the appropriate courts located in [INSERT STATE], and you consent to the personal jurisdiction of such courts.
+                Any dispute, controversy, or claim arising out of or relating to these Terms or the Service shall first be resolved through good-faith negotiation between the parties. If the dispute cannot be resolved through negotiation within thirty (30) days, either party may pursue resolution through the appropriate courts located in Florida, and you consent to the personal jurisdiction of such courts.
               </p>
 
               <h3 className="text-lg font-heading font-medium text-foreground mt-4 mb-2">10.3 Contact for Notices</h3>
@@ -310,9 +310,9 @@ const Terms = () => {
               </p>
               <address className="not-italic text-muted-foreground bg-card border border-border rounded-md p-4 mt-2">
                 <strong className="text-foreground">Black Eagle Project, Inc.</strong><br />
-                [INSERT MAILING ADDRESS]<br />
-                Email: [INSERT CONTACT EMAIL]<br />
-                EIN: [INSERT NONPROFIT EIN]
+                13720 SW 271st Ln, Homestead, FL 33032<br />
+                Email: info@blackeagleproject.org<br />
+                EIN: 92-0713659
               </address>
             </section>
 
@@ -345,7 +345,7 @@ const Terms = () => {
               <ul>
                 <li><strong>Organization Name:</strong> Black Eagle Project, Inc.</li>
                 <li><strong>Tax Status:</strong> 501(c)(3) Nonprofit</li>
-                <li><strong>EIN:</strong> [INSERT NONPROFIT EIN]</li>
+                <li><strong>EIN:</strong> 92-0713659</li>
               </ul>
               <p>
                 All data, Workout Logs, user profiles, workout history, and site infrastructure are the property of Black Eagle Project, Inc. As stated in Section 3.2, your personal data will not be sold, shared, or disclosed to third parties without your consent, except as required by law.
@@ -363,16 +363,19 @@ const Terms = () => {
                 If you have any questions about these Terms of Service or the DEFIT Challenge, please contact us at:
               </p>
               <p className="text-foreground font-medium mt-2">
-                [INSERT CONTACT EMAIL]
+                info@blackeagleproject.org
               </p>
             </section>
 
             <div className="text-center text-muted-foreground text-sm mt-12 pt-8 border-t border-border">
               <p>
-                © [INSERT YEAR] Black Eagle Project, Inc. All rights reserved.
+                © 2026 Black Eagle Project, Inc. All rights reserved.
               </p>
               <p className="mt-2">
                 DEFIT™ and the Double Eagle emblem are trademarks of Black Eagle Project, Inc.
+              </p>
+              <p className="mt-4 text-xs">
+                Synced from Privacy Policy on {new Date().toISOString().split('T')[0]}.
               </p>
             </div>
           </article>
