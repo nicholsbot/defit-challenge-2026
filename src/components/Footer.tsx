@@ -42,7 +42,7 @@ const Footer = () => {
               <img alt="DEFIT Challenge" className="w-48 h-48 object-contain" src="/lovable-uploads/cc2d9315-be04-4d2c-a390-e524797420ec.png" />
             </Link>
             <p className="text-muted-foreground text-sm">
-              Reserve Ready. Unit Strong.
+              “Twice the Citizen, Combat Ready, This We’ll Defend”
             </p>
           </div>
 
