@@ -41,8 +41,8 @@ const Footer = () => {
             <Link to="/" className="flex items-center gap-3 mb-4">
               <img alt="DEFIT Challenge" className="w-48 h-48 object-contain" src="/lovable-uploads/cc2d9315-be04-4d2c-a390-e524797420ec.png" />
             </Link>
-            <p className="text-muted-foreground text-sm">
-              “Twice the Citizen, Combat Ready, This We’ll Defend”
+            <p className="text-muted-foreground text-sm text-center">
+              “Twice the Citizen, Combat Ready”
             </p>
           </div>
 
