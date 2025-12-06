@@ -1,4 +1,5 @@
 import { useEffect } from "react";
+import { Link } from "react-router-dom";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 
@@ -79,7 +80,7 @@ const Terms = () => {
 
               <h3 className="text-lg font-heading font-medium text-foreground mt-4 mb-2">3.2 Privacy and Data Protection</h3>
               <p>
-                We are committed to protecting your privacy. We will not sell, share, rent, or disclose your personally identifying information or individual workout data to third parties without your explicit consent, except:
+                We are committed to protecting your privacy. For complete details on how we collect, use, store, and protect your personal information, please review our <Link to="/privacy" className="text-primary hover:underline">Privacy Policy</Link>. We will not sell, share, rent, or disclose your personally identifying information or individual workout data to third parties without your explicit consent, except:
               </p>
               <ul>
                 <li>As required by law, regulation, legal process, or governmental request.</li>
