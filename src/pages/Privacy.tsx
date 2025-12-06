@@ -17,7 +17,7 @@ const Privacy = () => {
         <p className="text-muted-foreground mb-8">
           <strong>Effective Date:</strong> January 26, 2026
           <br />
-          <strong>Last Updated:</strong> [INSERT LAST UPDATED DATE]
+          <strong>Last Updated:</strong> January 26, 2026
         </p>
 
         <div className="prose prose-invert max-w-none space-y-8">
