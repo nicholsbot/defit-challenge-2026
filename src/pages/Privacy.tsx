@@ -1,4 +1,5 @@
 import { useEffect } from "react";
+import { Link } from "react-router-dom";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 
@@ -46,7 +47,7 @@ const Privacy = () => {
               <li><strong>"User Data"</strong> — All data associated with your account, including Personal Data, Workout Data, preferences, and usage history</li>
             </ul>
             <p className="text-muted-foreground mt-4">
-              By registering for an account, logging workouts, or otherwise using the Service, you consent to the data practices described in this Privacy Policy. If you do not agree with these practices, please do not use the Service.
+              By registering for an account, logging workouts, or otherwise using the Service, you consent to the data practices described in this Privacy Policy. If you do not agree with these practices, please do not use the Service. Your use of the Service is also governed by our <Link to="/terms" className="text-primary hover:underline">Terms of Service</Link>.
             </p>
           </section>
 
