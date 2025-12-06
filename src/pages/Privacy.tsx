@@ -27,7 +27,7 @@ const Privacy = () => {
               1. Introduction & Scope
             </h2>
             <p className="text-muted-foreground mb-4">
-              This Privacy Policy describes how <strong>Black Eagle Project, Inc.</strong>, a United States 501(c)(3) non-profit organization (EIN: [INSERT NONPROFIT EIN]), collects, uses, stores, and protects your personal information when you use the DEFIT (Double Eagle Fitness Challenge) web application ("Service," "Website," or "App").
+              This Privacy Policy describes how <strong>Black Eagle Project, Inc.</strong>, a United States 501(c)(3) non-profit organization (EIN: 92-0713659), collects, uses, stores, and protects your personal information when you use the DEFIT (Double Eagle Fitness Challenge) web application ("Service," "Website," or "App").
             </p>
             <p className="text-muted-foreground mb-4">
               This Privacy Policy applies to all users of DEFIT, including:
@@ -175,7 +175,7 @@ const Privacy = () => {
               Retention Period
             </h3>
             <p className="text-muted-foreground mb-4">
-              Your User Data is retained for as long as your account remains active, plus a reasonable period thereafter for legal compliance and dispute resolution (typically [INSERT RETENTION PERIOD, e.g., "2 years"] after account closure).
+              Your User Data is retained for as long as your account remains active, plus a reasonable period thereafter for legal compliance and dispute resolution (typically 2 years after account closure or final interaction).
             </p>
 
             <h3 className="font-heading text-xl font-semibold text-foreground mt-6 mb-3">
@@ -199,7 +199,7 @@ const Privacy = () => {
               To request account deletion or data removal:
             </p>
             <ol className="list-decimal list-inside text-muted-foreground space-y-2 ml-4">
-              <li>Contact us at <strong>[INSERT CONTACT EMAIL]</strong> with the subject line "Data Deletion Request"</li>
+              <li>Contact us at <strong>info@blackeagleproject.org</strong> with the subject line "Data Deletion Request"</li>
               <li>Include your registered email address and full name for verification</li>
               <li>We will process your request within 30 days</li>
             </ol>
@@ -332,7 +332,7 @@ const Privacy = () => {
               We do not knowingly collect personal information from children under 13 years of age. If we discover that a child under 13 has provided us with personal information, we will promptly delete such data.
             </p>
             <p className="text-muted-foreground mt-4">
-              If you believe a minor has registered without proper consent, please contact us immediately at <strong>[INSERT CONTACT EMAIL]</strong>.
+              If you believe a minor has registered without proper consent, please contact us immediately at <strong>info@blackeagleproject.org</strong>.
             </p>
           </section>
 
@@ -366,11 +366,11 @@ const Privacy = () => {
               <p className="text-foreground font-semibold mb-2">Black Eagle Project, Inc.</p>
               <p className="text-muted-foreground">
                 Attn: Privacy Inquiries<br />
-                [INSERT MAILING ADDRESS]<br />
-                [INSERT CITY, STATE ZIP]
+                13720 SW 271st Ln<br />
+                Homestead, FL 33032
               </p>
               <p className="text-muted-foreground mt-4">
-                <strong>Email:</strong> [INSERT CONTACT EMAIL]<br />
+                <strong>Email:</strong> info@blackeagleproject.org<br />
                 <strong>Subject Line:</strong> "DEFIT Privacy Inquiry"
               </p>
             </div>
@@ -385,11 +385,11 @@ const Privacy = () => {
               12. Nonprofit & Ownership Disclosure
             </h2>
             <p className="text-muted-foreground mb-4">
-              The DEFIT Service is operated by <strong>Black Eagle Project, Inc.</strong>, a registered 501(c)(3) non-profit organization under the laws of the State of [INSERT STATE].
+              The DEFIT Service is operated by <strong>Black Eagle Project, Inc.</strong>, a registered 501(c)(3) non-profit organization under the laws of the State of Florida.
             </p>
             <ul className="list-disc list-inside text-muted-foreground space-y-2 ml-4">
-              <li><strong>EIN:</strong> [INSERT NONPROFIT EIN]</li>
-              <li><strong>Headquarters:</strong> [INSERT CITY, STATE]</li>
+              <li><strong>EIN:</strong> 92-0713659</li>
+              <li><strong>Headquarters:</strong> Homestead, FL</li>
             </ul>
 
             <h3 className="font-heading text-xl font-semibold text-foreground mt-6 mb-3">
