@@ -8,111 +8,108 @@ import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from '@/components/ui/form';
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useToast } from '@/hooks/use-toast';
 import { Shield, LogIn, UserPlus } from 'lucide-react';
 import defitLogo from '@/assets/defit-logo.png';
-
 const signInSchema = z.object({
   email: z.string().email('Invalid email address'),
-  password: z.string().min(6, 'Password must be at least 6 characters'),
+  password: z.string().min(6, 'Password must be at least 6 characters')
 });
-
 const signUpSchema = z.object({
   fullName: z.string().min(2, 'Name must be at least 2 characters'),
   email: z.string().email('Invalid email address'),
   password: z.string().min(6, 'Password must be at least 6 characters'),
-  confirmPassword: z.string(),
-}).refine((data) => data.password === data.confirmPassword, {
+  confirmPassword: z.string()
+}).refine(data => data.password === data.confirmPassword, {
   message: "Passwords don't match",
-  path: ['confirmPassword'],
+  path: ['confirmPassword']
 });
-
 type SignInValues = z.infer<typeof signInSchema>;
 type SignUpValues = z.infer<typeof signUpSchema>;
-
 export default function Auth() {
-  const { user, signIn, signUp } = useAuth();
+  const {
+    user,
+    signIn,
+    signUp
+  } = useAuth();
   const navigate = useNavigate();
-  const { toast } = useToast();
+  const {
+    toast
+  } = useToast();
   const [isLoading, setIsLoading] = useState(false);
   const [activeTab, setActiveTab] = useState('signin');
-
   useEffect(() => {
     if (user) {
       navigate('/dashboard');
     }
   }, [user, navigate]);
-
   const signInForm = useForm<SignInValues>({
     resolver: zodResolver(signInSchema),
-    defaultValues: { email: '', password: '' },
+    defaultValues: {
+      email: '',
+      password: ''
+    }
   });
-
   const signUpForm = useForm<SignUpValues>({
     resolver: zodResolver(signUpSchema),
-    defaultValues: { fullName: '', email: '', password: '', confirmPassword: '' },
+    defaultValues: {
+      fullName: '',
+      email: '',
+      password: '',
+      confirmPassword: ''
+    }
   });
-
   const handleSignIn = async (data: SignInValues) => {
     setIsLoading(true);
-    const { error } = await signIn(data.email, data.password);
+    const {
+      error
+    } = await signIn(data.email, data.password);
     setIsLoading(false);
-
     if (error) {
       toast({
         title: 'Sign in failed',
-        description: error.message === 'Invalid login credentials' 
-          ? 'Invalid email or password. Please try again.'
-          : error.message,
-        variant: 'destructive',
+        description: error.message === 'Invalid login credentials' ? 'Invalid email or password. Please try again.' : error.message,
+        variant: 'destructive'
       });
     } else {
-      toast({ title: 'Welcome back!', description: 'Signed in successfully.' });
+      toast({
+        title: 'Welcome back!',
+        description: 'Signed in successfully.'
+      });
       navigate('/dashboard');
     }
   };
-
   const handleSignUp = async (data: SignUpValues) => {
     setIsLoading(true);
-    const { error } = await signUp(data.email, data.password, data.fullName);
+    const {
+      error
+    } = await signUp(data.email, data.password, data.fullName);
     setIsLoading(false);
-
     if (error) {
-      const message = error.message.includes('already registered')
-        ? 'This email is already registered. Please sign in instead.'
-        : error.message;
+      const message = error.message.includes('already registered') ? 'This email is already registered. Please sign in instead.' : error.message;
       toast({
         title: 'Sign up failed',
         description: message,
-        variant: 'destructive',
+        variant: 'destructive'
       });
     } else {
-      toast({ 
-        title: 'Account created!', 
-        description: 'Welcome to DEFIT. You can now log your workouts.' 
+      toast({
+        title: 'Account created!',
+        description: 'Welcome to DEFIT. You can now log your workouts.'
       });
       navigate('/dashboard');
     }
   };
-
-  return (
-    <main className="min-h-screen bg-background texture-canvas">
+  return <main className="min-h-screen bg-background texture-canvas">
       <Navbar />
       
       <section className="pt-24 pb-16 min-h-[80vh] flex items-center">
         <div className="container px-4 max-w-md mx-auto">
           <div className="glass rounded-2xl p-8">
             <div className="flex flex-col items-center mb-8">
-              <img src={defitLogo} alt="DEFIT Logo" className="w-20 h-20 mb-4" />
+              <img alt="DEFIT Logo" className="w-20 h-20 mb-4" src="/lovable-uploads/97e87443-ab9a-45b2-852a-72f438faa764.png" />
               <h1 className="text-2xl font-heading font-bold text-center">
                 <span className="text-gradient">DEFIT</span> Challenge
               </h1>
@@ -136,42 +133,24 @@ export default function Auth() {
               <TabsContent value="signin">
                 <Form {...signInForm}>
                   <form onSubmit={signInForm.handleSubmit(handleSignIn)} className="space-y-4">
-                    <FormField
-                      control={signInForm.control}
-                      name="email"
-                      render={({ field }) => (
-                        <FormItem>
+                    <FormField control={signInForm.control} name="email" render={({
+                    field
+                  }) => <FormItem>
                           <FormLabel>Email</FormLabel>
                           <FormControl>
-                            <Input 
-                              type="email" 
-                              placeholder="soldier@army.mil" 
-                              className="bg-secondary"
-                              {...field} 
-                            />
+                            <Input type="email" placeholder="soldier@army.mil" className="bg-secondary" {...field} />
                           </FormControl>
                           <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-                    <FormField
-                      control={signInForm.control}
-                      name="password"
-                      render={({ field }) => (
-                        <FormItem>
+                        </FormItem>} />
+                    <FormField control={signInForm.control} name="password" render={({
+                    field
+                  }) => <FormItem>
                           <FormLabel>Password</FormLabel>
                           <FormControl>
-                            <Input 
-                              type="password" 
-                              placeholder="••••••••" 
-                              className="bg-secondary"
-                              {...field} 
-                            />
+                            <Input type="password" placeholder="••••••••" className="bg-secondary" {...field} />
                           </FormControl>
                           <FormMessage />
-                        </FormItem>
-                      )}
-                    />
+                        </FormItem>} />
                     <Button type="submit" variant="hero" className="w-full" disabled={isLoading}>
                       <Shield className="w-4 h-4 mr-2" />
                       {isLoading ? 'Signing in...' : 'Sign In'}
@@ -183,77 +162,42 @@ export default function Auth() {
               <TabsContent value="signup">
                 <Form {...signUpForm}>
                   <form onSubmit={signUpForm.handleSubmit(handleSignUp)} className="space-y-4">
-                    <FormField
-                      control={signUpForm.control}
-                      name="fullName"
-                      render={({ field }) => (
-                        <FormItem>
+                    <FormField control={signUpForm.control} name="fullName" render={({
+                    field
+                  }) => <FormItem>
                           <FormLabel>Full Name</FormLabel>
                           <FormControl>
-                            <Input 
-                              placeholder="John Doe" 
-                              className="bg-secondary"
-                              {...field} 
-                            />
+                            <Input placeholder="John Doe" className="bg-secondary" {...field} />
                           </FormControl>
                           <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-                    <FormField
-                      control={signUpForm.control}
-                      name="email"
-                      render={({ field }) => (
-                        <FormItem>
+                        </FormItem>} />
+                    <FormField control={signUpForm.control} name="email" render={({
+                    field
+                  }) => <FormItem>
                           <FormLabel>Email</FormLabel>
                           <FormControl>
-                            <Input 
-                              type="email" 
-                              placeholder="soldier@army.mil" 
-                              className="bg-secondary"
-                              {...field} 
-                            />
+                            <Input type="email" placeholder="soldier@army.mil" className="bg-secondary" {...field} />
                           </FormControl>
                           <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-                    <FormField
-                      control={signUpForm.control}
-                      name="password"
-                      render={({ field }) => (
-                        <FormItem>
+                        </FormItem>} />
+                    <FormField control={signUpForm.control} name="password" render={({
+                    field
+                  }) => <FormItem>
                           <FormLabel>Password</FormLabel>
                           <FormControl>
-                            <Input 
-                              type="password" 
-                              placeholder="••••••••" 
-                              className="bg-secondary"
-                              {...field} 
-                            />
+                            <Input type="password" placeholder="••••••••" className="bg-secondary" {...field} />
                           </FormControl>
                           <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-                    <FormField
-                      control={signUpForm.control}
-                      name="confirmPassword"
-                      render={({ field }) => (
-                        <FormItem>
+                        </FormItem>} />
+                    <FormField control={signUpForm.control} name="confirmPassword" render={({
+                    field
+                  }) => <FormItem>
                           <FormLabel>Confirm Password</FormLabel>
                           <FormControl>
-                            <Input 
-                              type="password" 
-                              placeholder="••••••••" 
-                              className="bg-secondary"
-                              {...field} 
-                            />
+                            <Input type="password" placeholder="••••••••" className="bg-secondary" {...field} />
                           </FormControl>
                           <FormMessage />
-                        </FormItem>
-                      )}
-                    />
+                        </FormItem>} />
                     <Button type="submit" variant="hero" className="w-full" disabled={isLoading}>
                       <UserPlus className="w-4 h-4 mr-2" />
                       {isLoading ? 'Creating account...' : 'Create Account'}
@@ -267,6 +211,5 @@ export default function Auth() {
       </section>
 
       <Footer />
-    </main>
-  );
+    </main>;
 }
