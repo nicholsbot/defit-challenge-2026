@@ -28,7 +28,7 @@ const App = () => (
       <TooltipProvider>
         <Toaster />
         <Sonner />
-        <BrowserRouter>
+        <BrowserRouter basename="/defit-challenge-2026">
           <Routes>
             <Route path="/" element={<Index />} />
             <Route path="/about" element={<About />} />
