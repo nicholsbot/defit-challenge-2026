@@ -33,13 +33,30 @@ import type { Database } from '@/integrations/supabase/types';
 
 type UnitCategory = Database['public']['Enums']['unit_category'];
 
-const unitCategoryOptions: { value: UnitCategory; label: string; description: string }[] = [
+// Extended participant categories (includes 'soldier' which needs DB migration)
+type ParticipantCategory = UnitCategory | 'soldier';
+
+const participantCategoryOptions: { value: ParticipantCategory; label: string; description: string }[] = [
+  { value: 'soldier', label: 'Soldier', description: 'U.S. Army Reserve Soldier eligible for official awards' },
   { value: 'veterans', label: 'Veteran', description: 'Honorably discharged military service member' },
   { value: 'government', label: 'Government Employee', description: 'Current federal, state, or local government employee' },
   { value: 'military_family', label: 'Military Family', description: 'Spouse or dependent of active duty or reserve member' },
   { value: 'civilian', label: 'Civilian', description: 'General public participant' },
   { value: 'other', label: 'Other', description: 'Other affiliation not listed above' },
 ];
+
+// Army Reserve duty statuses
+type DutyStatus = 'IMA' | 'TPU' | 'AGR' | 'T10';
+
+const dutyStatusOptions: { value: DutyStatus; label: string; description: string }[] = [
+  { value: 'TPU', label: 'TPU', description: 'Troop Program Unit (Traditional Drilling Reservist)' },
+  { value: 'IMA', label: 'IMA', description: 'Individual Mobilization Augmentee' },
+  { value: 'AGR', label: 'AGR', description: 'Active Guard Reserve' },
+  { value: 'T10', label: 'T10', description: 'Title 10 (Federal Active Duty)' },
+];
+
+// Keep old reference for backwards compatibility
+const unitCategoryOptions = participantCategoryOptions;
 
 const notificationModeOptions = [
   { value: 'immediate', label: 'Immediate', description: 'Get notified right away when your logs are verified or flagged' },
@@ -50,12 +67,24 @@ const notificationModeOptions = [
 const profileSchema = z.object({
   full_name: z.string().min(2, 'Name must be at least 2 characters').max(100, 'Name must be less than 100 characters'),
   unit: z.string().max(100, 'Unit name must be less than 100 characters').optional().or(z.literal('')),
-  unit_category: z.enum(['veterans', 'government', 'military_family', 'civilian', 'other']).nullable(),
+  unit_category: z.enum(['soldier', 'veterans', 'government', 'military_family', 'civilian', 'other']).nullable(),
+  duty_status: z.enum(['IMA', 'TPU', 'AGR', 'T10']).nullable().optional(),
+  rank: z.string().max(50, 'Rank must be less than 50 characters').optional().or(z.literal('')),
   email_notifications: z.boolean(),
   notification_mode: z.enum(['immediate', 'digest', 'none']),
   notify_on_verified: z.boolean(),
   notify_on_flagged: z.boolean(),
   in_app_notifications: z.boolean(),
+}).superRefine((data, ctx) => {
+  if (data.unit_category === 'soldier') {
+    if (!data.duty_status) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        message: "Duty status is required for Soldiers",
+        path: ["duty_status"],
+      });
+    }
+  }
 });
 
 type ProfileFormValues = z.infer<typeof profileSchema>;
@@ -73,6 +102,8 @@ export default function ProfileSettings() {
       full_name: '',
       unit: '',
       unit_category: null,
+      duty_status: null,
+      rank: '',
       email_notifications: true,
       notification_mode: 'immediate',
       notify_on_verified: true,
@@ -80,6 +111,9 @@ export default function ProfileSettings() {
       in_app_notifications: true,
     },
   });
+
+  const watchedCategory = form.watch('unit_category');
+  const isSoldier = watchedCategory === 'soldier';
 
   useEffect(() => {
     if (!authLoading && !user) {
@@ -100,11 +134,18 @@ export default function ProfileSettings() {
 
         if (error) throw error;
 
+        // Check for locally stored soldier data
+        const soldierDataStr = localStorage.getItem(`defit_soldier_data_${user.id}`);
+        const soldierData = soldierDataStr ? JSON.parse(soldierDataStr) : null;
+
         if (data) {
           form.reset({
             full_name: data.full_name || '',
             unit: data.unit || '',
-            unit_category: data.unit_category,
+            // If we have local soldier data, use 'soldier' category
+            unit_category: soldierData?.is_soldier ? 'soldier' : data.unit_category,
+            duty_status: soldierData?.duty_status || null,
+            rank: soldierData?.rank || '',
             email_notifications: data.email_notifications ?? true,
             notification_mode: (data as any).notification_mode || 'immediate',
             notify_on_verified: data.notify_on_verified ?? true,
@@ -130,12 +171,27 @@ export default function ProfileSettings() {
 
     setSaving(true);
     try {
+      // Note: 'soldier' category and duty_status/rank fields need a Supabase migration
+      // For now, store soldier-specific data in localStorage and use 'other' as category fallback
+      const dbCategory = values.unit_category === 'soldier' ? 'other' : values.unit_category;
+      
+      // Store soldier-specific data locally until DB migration is done
+      if (values.unit_category === 'soldier') {
+        localStorage.setItem(`defit_soldier_data_${user.id}`, JSON.stringify({
+          duty_status: values.duty_status,
+          rank: values.rank,
+          is_soldier: true,
+        }));
+      } else {
+        localStorage.removeItem(`defit_soldier_data_${user.id}`);
+      }
+
       const { error } = await supabase
         .from('profiles')
         .update({
           full_name: values.full_name,
           unit: values.unit || null,
-          unit_category: values.unit_category,
+          unit_category: dbCategory,
           email_notifications: values.email_notifications,
           notification_mode: values.notification_mode,
           notify_on_verified: values.notify_on_verified,
@@ -147,7 +203,11 @@ export default function ProfileSettings() {
       if (error) throw error;
 
       setLastSaved(new Date());
-      toast.success('Profile updated successfully');
+      if (values.unit_category === 'soldier') {
+        toast.success('Profile updated! Note: Soldier data saved locally until database is updated.');
+      } else {
+        toast.success('Profile updated successfully');
+      }
     } catch (error) {
       console.error('Error updating profile:', error);
       toast.error('Failed to update profile');
@@ -269,7 +329,7 @@ export default function ProfileSettings() {
                     )}
                   />
 
-                  {/* Unit Category */}
+                  {/* Participant Category */}
                   <FormField
                     control={form.control}
                     name="unit_category"
@@ -289,7 +349,7 @@ export default function ProfileSettings() {
                             </SelectTrigger>
                           </FormControl>
                           <SelectContent className="bg-card border-border">
-                            {unitCategoryOptions.map((option) => (
+                            {participantCategoryOptions.map((option) => (
                               <SelectItem key={option.value} value={option.value}>
                                 <div className="flex flex-col">
                                   <span>{option.label}</span>
@@ -301,7 +361,7 @@ export default function ProfileSettings() {
                         <FormDescription>
                           Select the category that best describes your affiliation:
                           <ul className="mt-2 space-y-1 text-xs">
-                            {unitCategoryOptions.map((option) => (
+                            {participantCategoryOptions.map((option) => (
                               <li key={option.value} className="flex gap-2">
                                 <span className="font-medium text-foreground">{option.label}:</span>
                                 <span>{option.description}</span>
@@ -313,6 +373,70 @@ export default function ProfileSettings() {
                       </FormItem>
                     )}
                   />
+
+                  {/* Duty Status - Only for Soldiers */}
+                  {isSoldier && (
+                    <>
+                      <FormField
+                        control={form.control}
+                        name="duty_status"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel className="flex items-center gap-2">
+                              <Building2 className="w-4 h-4 text-primary" />
+                              Duty Status
+                            </FormLabel>
+                            <Select
+                              onValueChange={field.onChange}
+                              value={field.value || undefined}
+                            >
+                              <FormControl>
+                                <SelectTrigger className="bg-secondary/50 border-border">
+                                  <SelectValue placeholder="Select your duty status" />
+                                </SelectTrigger>
+                              </FormControl>
+                              <SelectContent className="bg-card border-border">
+                                {dutyStatusOptions.map((option) => (
+                                  <SelectItem key={option.value} value={option.value}>
+                                    <span className="font-medium">{option.label}</span>
+                                    <span className="text-muted-foreground ml-2">— {option.description}</span>
+                                  </SelectItem>
+                                ))}
+                              </SelectContent>
+                            </Select>
+                            <FormDescription>
+                              Your Army Reserve component type.
+                            </FormDescription>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+
+                      <FormField
+                        control={form.control}
+                        name="rank"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel className="flex items-center gap-2">
+                              <User className="w-4 h-4 text-primary" />
+                              Rank
+                            </FormLabel>
+                            <FormControl>
+                              <Input
+                                placeholder="e.g., SGT, SSG, CPT"
+                                {...field}
+                                className="bg-secondary/50 border-border"
+                              />
+                            </FormControl>
+                            <FormDescription>
+                              Your current military rank.
+                            </FormDescription>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                    </>
+                  )}
 
                   {/* Notification Preferences Section */}
                   <div className="pt-6 border-t border-border">
